@@ -1,8 +1,11 @@
-# React 16.4
+# React
+- 从入门到精通
+----
 
 - 学习资源
     - 【幕课】React16.4 开发简书项目 从零基础入门到实战
     - [【BiliBili】React教程_React router4.x Antd Flux入门实战视频教程 【2018.12.17】](https://www.bilibili.com/video/BV1yt411e7NB)
+    - 10-React 从入门到精通 【实战进阶45讲】【极客时间】【完结】
 
 - 后台模版
     - [Ant Design Pro 后台模版 - 是一个企业级中后台前端/设计解决方案](https://pro.ant.design/docs/getting-started-cn)
@@ -67,7 +70,7 @@
             - 在 FaceBook 团队 使用传统前端技术(如 Jquery) 开发 如下图所示的功能 (新消息提醒的红点功能)，却一再出现BUG，如：
                 - 当我有一条新消息来了的时候，红点上的数字并没有更新
                 - 或者，当我已经点开了 新消息，但是页面上的红点依然存在
-                - ![](./img/react/1-1.bug.jpg)
+                - ![](./img/1-1.bug.jpg)
             - 于是 FaceBook 团队开始思考深层次的原因:
                 - #### 问题出现的根源
                     - 1.传统 UI 操作关注太多细节
@@ -80,17 +83,17 @@
             - 在 React 中，不管是来了一条新消息，还是2条, 3条 ... 逻辑都是一样的：
                 - 只要 React 发现前后两个状态变了，相应的 UI 也会发生变化，React 会自动帮你做更新 UI 的操作
                 - 这样的话，就能把你从 复杂的 UI操作 中解放出来，你只需要去关心 `状态` 和 `最终UI长成什么样`
-            - ![](./img/react/1-1.react-refresh.jpg)
+            - ![](./img/1-1.react-refresh.jpg)
         - ### 3.Flux架构：单向数据流
             - #### 数据模型如何解决？
                 - 在传统 MVC 架构中，`Model` 和 `View` 是相互影响，双向绑定的
                 - 这就导致了，当出现问题时，难以定位问题，你不知道是 `Model` 发生了问题，还是 `View` 发生了问题
                 - 而且 传统 MVC 难以扩展和维护
-                - ![](./img/react/1-1.data-model.jpg)
+                - ![](./img/1-1.data-model.jpg)
             - #### Flux架构：单向数据流
                 - 所以 FaceBook 团队 提出了 `Flux架构`
                 - 注意：Flux 不是一个完整的技术实现，而是一个设计模式，它的 核心思想就是 `单向数据流`
-                - ![](./img/react/flux.jpg)
+                - ![](./img/flux.jpg)
             - #### Flux架构衍生的项目: `React` 和 `MobX`
 
             - #### `Redux = Reducer + Flux`
@@ -104,18 +107,18 @@
 
     - ## 1-2 以组件方式考虑UI的构建
         - ### 将 UI 组织成组件树的形式
-            - ![](./img/react/1-2.component-build-UI.jpg)
+            - ![](./img/1-2.component-build-UI.jpg)
         - ### 什么是 React 组件呢？
             - 就是，由 `Props 属性` 和 `State 状态`, 最终得到一个 `view`
             - 1.React组件一般不提供方法，而是某种状态机。（你的状态是什么，它的结果一定是什么）
             - 2.React组件可以理解为一个 `纯函数`
             - 3.单向数据绑定
-            - ![](./img/react/1-2.react-component.jpg)
+            - ![](./img/1-2.react-component.jpg)
         - ### 创建一个简单的组件: tabSelect
             - 1.静态UI长成什么样？
             - 2.考虑组件的状态组成：它的状态是来自外部，还是需要在内部去维护
             - 3.考虑组件的交互方式：内部用户执行的一些操作，如何暴露出去给外部的人去使用？
-            - ![](./img/react/1-2.react-component-example.jpg)
+            - ![](./img/1-2.react-component-example.jpg)
             ```js
             // TabSelector.js 组件
 
@@ -199,7 +202,7 @@
                 - `受控组件 它的状态 是由DOM自身维护的`
                 - 用户输入什么，就显示什么
                 - 如果你要拿到 非受控组件 的值，你就要知道它的 原生 `DOM node` 是什么
-            - ![](./img/react/1-2.control-component.jpg)
+            - ![](./img/1-2.control-component.jpg)
         - ### 何时创建组件：单一职责原则
             - 1.每个组件只做一件事情
             - 2.如果组件变得复杂，那么应该拆分成小组件
@@ -349,7 +352,7 @@
             - 最终来重新组织我们的 UI
             > 其他模版语言 是需要你去学习一些 新的语法的<br>
             > 而 JSX 不需要
-            - ![](./img/react/1-3.angular-template.jpg)
+            - ![](./img/1-3.angular-template.jpg)
 
 
 
@@ -366,7 +369,7 @@
                 - 最终在真实的 DOM 节点上，**`并不是真正的 整体刷新所有的DOM`**
                 - 而是 只会把这个 Diff 的部分，用一种高效的方式 去更新到 UI 上，**`从而能够保证性能`**
             - 2.Virtual DOM 是如何工作的
-                - ![](./img/react/1-5.virtual-dom.jpg)
+                - ![](./img/1-5.virtual-dom.jpg)
                 - 变化：顺序的变化、层次的变化
                 - 这个场景下，我们就需要做一些 **`局部的更新`**
                 - 我们要 **`让程序自动去做这个事情`**，不需要让 用户去关心这些细节，不需要手动的去做这些事情, 这是一个非常大的挑战
@@ -376,7 +379,7 @@
                 - FaceBook 工程师 **`针对 UI 更新的特点，来进行算法的优化`**
                     - 最终能够把这个 DOM Diff 算法复杂度 降低到了 **`O(n)`**, 是一个非常 巨大的提升
         - ### 那么 他究竟做了什么优化，来实现这么一个 高性能的算法呢？
-            - ![](./img/react/1-5.Breadth-First-Search.jpg)
+            - ![](./img/1-5.Breadth-First-Search.jpg)
             - #### 广度优先分层比较
                 - 拿到两个 DOM树 之后，是一层一层的比较
                 - 我们 先来看 上面这个图中，前后 两棵 DOM树 的区别
@@ -384,21 +387,21 @@
                     - 2.D节点 位置发生了变化
                     - 3.A节点的子节点G，由原来的圆形，变成了 方形，意思是 组件类型 发生了变化
                 - #### 那 针对这些 不同的变化，React 的 Diff 算法是有不同的处理方式
-                    - ![](./img/react/1-5.1.jpg)
+                    - ![](./img/1-5.1.jpg)
                     - 1.从 根节点开始比较
-                    - ![](./img/react/1-5.2.jpg)
+                    - ![](./img/1-5.2.jpg)
                     - 2.顺序发生了变化
                         - 交换两个节点的位置
                             - 对于我们 来说，顺序发生了变化，我们只需要 将他们 交换一下顺序就可以了
                             - 但是，对于计算机来说，如果要交换他们的顺序，就要知道它们的 **`唯一标识`**
                                 - 而且，计算机 要知道 节点的顺序，首先也要先 按照 **`唯一标识`** 记录下它们的顺序，用来和 变化后的 tree 来对比，才知道 是否发生了变化
-                    - ![](./img/react/1-5.3.jpg)
+                    - ![](./img/1-5.3.jpg)
                     - 3.节点类型发生变化
                         - A 下面的 F节点，变成了 G节点
                             - 当 React 遇到这种 情况的时候，
                             - 它会 **`直接把 F节点 删除`**，然后 创建一个新的 G节点，然后 append 到 A节点下面
                         - > 它 不会去管，你这个 F节点 是否被其他地方 用到 （React 不会去做这些检查），它 只会简单的把 F删掉 换成一个 G节点。(因为 去检查 会有额外的 计算量)
-                    - ![](./img/react/1-5.4.jpg)
+                    - ![](./img/1-5.4.jpg)
                     - 4.节点跨层移动
                         - 这是 react 核心优化的一种情况
                         - 例如：D节点 原来是 B的子节点，现在变成了 B节点 的 孙节点
@@ -422,14 +425,15 @@
         - #### 虚拟 DOM 的两个假设
             - 1.组件的 DOM 结构是 相对稳定的
             - 2.类型相同的兄弟节点 可以被唯一标识
-            - ![](./img/react/1-5.5.jpg)
+            - ![](./img/1-5.5.jpg)
         - 当一个 同级兄弟节点，没有给 **`key值`** 时
             - 不仅仅会在 console 中 warning 提示
             - 有可能 在 DOM Diff 算法中，直接不做对比 (因为没有 唯一标识 的key值), 而是 做一些性能 开销更大 的行为
             - > 所以 key 值不只是 用来消除 warning，更多的是 提高性能 的方法
         - ### DOM Diff 简单示例
             - https://supnate.github.io/react-dom-diff/index.html
-            - ![](./img/react/1-5.6.jpg)
+            - ![](./img/1-5.6.jpg)
+            - [源码 目录 下载](https://github.com/946629031/React/tree/main/react-dom-diff)
 
 
 
@@ -460,7 +464,7 @@
             store.subscribe(this.handleStoreChange)
             ```
         - Redux的工作流程
-        - ![](./img/react/redux-flow.jpg)
+        - ![](./img/redux-flow.jpg)
         ```js
         // Component
         import React, { Component } from 'react
@@ -658,14 +662,14 @@
                 - 在回答这个问题前，我们先来看看 假如没有 Redux, 只用 React 的情况下会存在什么问题:
                     - 在一个大型应用中，没有 Redux 的话，组件之间的通信会变得 异常复杂、麻烦，而且 各种状态数据 没法统一管理
                     - 而 Redux 的出现，就是为了解决这种问题的，如下图:
-            - ![](./img/react/redux.jpg)
+            - ![](./img/redux.jpg)
         - ### `Redux = Reducer + Flux`
             - 在 2013年 React 开源的时候，FaceBook 除了放出 React 之外，还放出了最原始的 **`Flux`** 这个辅助 React 使用的 数据层框架，后来才慢慢的被 优化升级成了 Redux
         - ### Flux架构：单向数据流
-            - ![](./img/react/flux.jpg)
+            - ![](./img/flux.jpg)
 
     - ## 5-2 Redux的工作流程
-        - ![](./img/react/redux-flow.jpg)
+        - ![](./img/redux-flow.jpg)
         - ### 打个比喻
             - 我们去图书馆借书 的流程
             - 角色：
@@ -719,7 +723,7 @@
                 ```
 
             - 写到这里，我们再来看一下上面这张图
-                - ![](./img/react/redux-flow.jpg)
+                - ![](./img/redux-flow.jpg)
                 - 1.我们创建了 reducer ，它里面负责存储一些 整个项目中的数据
                 - 2.然后把 reducer 传给 store , 这样的话，创建的这个 store , 它仓库 里面有多少数据，都可以去 reducer 里面去查看了
 
@@ -1857,7 +1861,7 @@
     - ## 6-5 什么是Redux中间件
         - 我们先看来看 关键字 "中间件"
             - 那么，到底是 谁和谁的中间呢？
-            - ![](./img/react/redux-data-flow.png)
+            - ![](./img/redux-data-flow.png)
             - 实际上，这个中间件指的 就是 `action` 和 `store` 的中间
             - 我们使用 `thunk` 之后，实际上 就是对 `dispatch` 做了一个升级
                 - 以前只能传对象，现在也可以传函数了
@@ -3226,7 +3230,7 @@
 
 - ## 12 React 获取服务器数据 axios插件 fetch-jsonp插件的使用（26分15秒）
 - ## 13 React 生命周期函数
-    ![](./img/react/life.jpg)
+    ![](./img/life.jpg)
     - [React v16.3之后的组件生命周期函数](https://zhuanlan.zhihu.com/p/38030418)
         - React v16.3虽然是一个小版本升级，但是却对React组件生命周期函数有巨大变化
     ```
