@@ -1,11 +1,12 @@
 # React
 - 从入门到精通
 ----
-
+- [React 官网](https://zh-hans.reactjs.org/)
 - 学习资源
     - 【幕课】React16.4 开发简书项目 从零基础入门到实战
     - [【BiliBili】React教程_React router4.x Antd Flux入门实战视频教程 【2018.12.17】](https://www.bilibili.com/video/BV1yt411e7NB)
     - 10-React 从入门到精通 【实战进阶45讲】【极客时间】【完结】
+        - 源码 [react-geek-time - CodeSandbox](https://codesandbox.io/s/6n20nrzlxz?file=/src/c04/SnapshotSample.js)
 
 - 后台模版
     - [Ant Design Pro 后台模版 - 是一个企业级中后台前端/设计解决方案](https://pro.ant.design/docs/getting-started-cn)
@@ -14,7 +15,7 @@
 - 目录
     - [第1章 React基础](#第1章-React基础)
         - [1-1 React出现的历史背景及特性介绍](#1-1-React出现的历史背景及特性介绍)
-            - [Flux架构：单向数据流](#Flux架构：单向数据流)
+            - [Flux架构：单向数据流](#Flux架构-单向数据流)
             - []()
             - []()
         - [1-2 以组件方式考虑UI的构建](#1-2-以组件方式考虑UI的构建)
@@ -29,12 +30,17 @@
             - []()
             - []()
         - [1-4 React组件的生命周期及其使用场景](#1-4-React组件的生命周期及其使用场景)
+            - [React 生命周期函数](#React-生命周期函数)
         - [1-5 理解 Virtual DOM 及 key 属性的作用](#1-5-理解-Virtual-DOM-及-key-属性的作用)
+            - [Virtual DOM 是如何工作的](#Virtual-DOM-是如何工作的)
         - [1-6 组件设计模式 高阶组件和函数作为子组件](#1-6-组件设计模式-高阶组件和函数作为子组件)
         - [1-7 理解新的 Context API 及其使用场景](#1-7-理解新的-Context-API-及其使用场景)
         - [1-8 使用脚手架工具创建 React 项目](#1-8-使用脚手架工具创建-React-项目)
         - [1-9 打包和部署](#1-9-打包和部署)
     - [第2章 React初探](#第2章-React初探)
+        - [1.环境搭建](#1环境搭建)
+        - [2.React 组件分类](#2React-组件分类)
+
     - [第3章 React基础精讲](#第3章-React基础精讲)
     - [第4章 React高级内容](#第4章-React高级内容)
     - [第5章 Redux入门](#第5章-Redux入门)
@@ -62,6 +68,28 @@
     - [第9章 项目实战：详情页面和登录功能开发](#第9章-项目实战：详情页面和登录功能开发)
     - []()
     - []()
+----
+
+- 目录
+    - [3.React 创建组件、绑定属性（绑定class、绑定style）、引入图片、循环数组渲染数据](#3React-创建组件绑定属性绑定class绑定style引入图片循环数组渲染数据)
+    - [4.React事件 方法、 React定义方法的几种方式 获取数据 改变数据 执行方法传值](#4React事件-方法-React定义方法的几种方式-获取数据-改变数据-执行方法传值)
+        - [2.如何改变state的数据？](#2如何改变state的数据)
+        - [3.如何改变state的数据？](#3改变this指向的三种方法)
+        - [4.执行方法 function 如何传递参数？](#4执行方法-function-如何传递参数)
+        - [性能优化: onClick 执行方法 如何传参？](#性能优化-onClick-执行方法-如何传参)
+    - [5.React 键盘事件 表单事件 事件对象以及React中的ref获取dom节点 、React实现类似Vue的双向数据绑定](#5React-键盘事件-表单事件-事件对象以及React中的ref获取dom节点-React实现类似Vue的双向数据绑定)
+        - 事件对象
+        - 键盘事件
+        - 表单事件
+        - [ref获取dom节点](#ref获取dom节点)
+        - React实现类似于vue双向数据绑定
+    - [6.React表单详解 约束性和非约束性组件 input text checkbox radio  select  textarea  以及获取表单的内容](#6React表单详解-约束性和非约束性组件-input-text-checkbox-radio--select--textarea--以及获取表单的内容)
+    - 07 React实现Todolist练习 （上）（15分21秒）
+    - 08 React实现Todolist练习 Todolist 待办事项 已经完成 （中）（22分8秒）
+    - 09 React的模块化以及封装Storage实现todolist 待办事项 已经完成事项 以及实现数据持久化（下）（13分10秒）
+    - 10 React中的组件、父子组件、React props父组件给子组件传值、子组件给父组件传值、父组件中通过refs获取子组件属性和方法(34分3秒)
+
+----
 
 - # 第1章 React基础
     - ## 1-1 React出现的历史背景及特性介绍
@@ -90,7 +118,7 @@
                 - 这就导致了，当出现问题时，难以定位问题，你不知道是 `Model` 发生了问题，还是 `View` 发生了问题
                 - 而且 传统 MVC 难以扩展和维护
                 - ![](./img/1-1.data-model.jpg)
-            - #### Flux架构：单向数据流
+            - #### Flux架构: 单向数据流
                 - 所以 FaceBook 团队 提出了 `Flux架构`
                 - 注意：Flux 不是一个完整的技术实现，而是一个设计模式，它的 核心思想就是 `单向数据流`
                 - ![](./img/flux.jpg)
@@ -357,6 +385,122 @@
 
 
     - ## 1-4 React组件的生命周期及其使用场景
+        - [react 生命周期图 在线 各版本 各语言: https://projects.wojtekmaj.pl/react-lifecycle-methods-diagram/](https://projects.wojtekmaj.pl/react-lifecycle-methods-diagram/)
+        - ![](./img/1-4.react-lifecycle-16.3.jpg)
+        - ![](./img/1-4.react-lifecycle-16.4.jpg)
+        - 什么是 commit ?
+            - commit 就是 react 把当前的状态，映射到 DOM 的时候
+            - 它需要 实际的去更新 DOM 节点
+            - 更新 DOM 节点 就称之为 commit
+        - **`Pre-Commit`** 阶段
+            - Pre-Commit 阶段，还没真正的更新 DOM
+            - 但是 在这个阶段是 **`可以读取 DOM 的内容的`**
+        - **`Commit`** 阶段
+            - DOM 已经被更新了
+
+        - [React v16.3之后的组件生命周期函数](https://zhuanlan.zhihu.com/p/38030418)
+            - React v16.3虽然是一个小版本升级，但是却对React组件生命周期函数有巨大变化
+        ```
+        生命周期函数
+
+            - 装配 / 初始化
+                constructor
+                static getDerivedStateFromProps
+                componentWillMount / UNSAFE_componentWillMount
+                render
+                componentDidMount
+
+            - 更新 / 组件重新渲染
+                componentWillReceiveProps / UNSAFE_...
+                static getDerivedStateFromProps
+                shouldComponentUpdate
+                componentWillUpdate / UNSAFE_...
+                render
+                getSnapshotBeforeUpdate
+                componentDidUpdate
+
+            - 卸载
+                componentWillUnmount
+        ```
+        ```js
+        class App extends react.Component {
+
+            // 首先被执行
+            constructor (props) {}
+
+            // 准备：即将被加载
+            componentWillMount () {} // UNSAFE
+
+            // 渲染中
+            render()
+
+            getSnapshotBeforeUpdate(prevProps, prevState) {}
+
+            // 已插入真实DOM
+            componentDidMount() {}
+
+            // 准备：即将被重新渲染，状态未变化
+            componentWillUpdate(nextProps, nextState) {} // UNSAFE
+
+            // 完成：正在被重新渲染，状态已变化
+            componentDidUpdate(prevProps, prevState, snapshot) {}
+
+            // 已加载组件，收到新属性时调用
+            componentWillReceiveProps(nextProps) {} // UNSAFE
+
+            // 组件将被卸载
+            componentWillUnmount() {}
+
+            shouldComponentUpdate(nextProps, nextState) {}
+        }
+        ```
+        ```js
+        React 更新方式：
+            - 1.setState
+            - 2.forceUpdate // 强制更新
+                - react强制重新渲染: 在react中，state和props数据更新，就会重新render，但是当层级过深时，可能就不会触发渲染，这时候就要用到 this.forceUpdate();
+
+            - 3.父组件更新，会带动 子组件更新
+                - 如：父组件 App 下面有个 Text子组件，如果 父组件更新，子组件也会跟着更新
+        ```
+
+        - `constructor`
+            - 1.用于初始化内部状态，很少使用
+            - 2.唯一可以直接修改 state 的地方
+        - `getDerivedStateFromProps`
+            - react v16.3 版本 新加的 生命周期函数, 用来取代 原来的 componentWillReceiveProps
+            - 1.当 state 需要从 props 初始化时使用
+            - 2.尽量不要使用：维护两者状态的一致性，会增加复杂度
+                - 如果你的 state 需要从 props 获得，一般来说 都可以从 props 动态计算得到
+                - 因为如果 一旦你需要单独存储 state, 那么就意味着 你需要始终 维护 两者的一致性, 而维护这种 一致性 会增加很多的 复杂度, 容易增加 BUG
+            - 3.每次 render 都会调用
+            - 4.典型场景: 表单控件获取默认值 (初始化时的默认值)
+        - `componentDidMount`
+            - 1.UI 渲染完成后调用
+            - 2.只执行一次
+            - 3.典型场景: 获取外部资源
+        - `componentWillUnmount`
+            - 1.移除组件时调用
+            - 2.典型场景: 资源释放
+        - `getSnapshotBeforeUpdate`
+            - 1.在页面 render 之前调用, state 更新
+            - 2.典型场景: 获取 render 之前的 DOM 状态
+
+    - #### React 生命周期函数
+        ```js
+        componentWillReceiveProps (nextProps) {
+            if (nextProps.attendanceStatusList !== this.state.attendanceStatusList) {
+                console.log('参数变化了 ', nextProps.attendanceStatusList);
+                this.setState({ attendanceStatusList: nextProps.attendanceStatusList })
+            }
+        }
+
+        componentDidUpdate(prevProps) {
+            // 每次打开弹窗时 设置焦点
+            if (prevProps.model.modelObj.addGuestModalVisible != this.props.model.modelObj.addGuestModalVisible && this.props.model.modelObj.addGuestModalVisible) setTimeout(() => { this.guestName.input.focus() }, 150)
+        }
+        ```
+
     - ## 1-5 理解 Virtual DOM 及 key 属性的作用
         - 小结在前
             - 1.算法复杂度为 O(n)
@@ -368,16 +512,16 @@
                 - 当 虚拟DOM 状态发生变化时，它需要 计算 变化前后两套 虚拟DOM 的区别，来产生一个 Diff
                 - 最终在真实的 DOM 节点上，**`并不是真正的 整体刷新所有的DOM`**
                 - 而是 只会把这个 Diff 的部分，用一种高效的方式 去更新到 UI 上，**`从而能够保证性能`**
-            - 2.Virtual DOM 是如何工作的
-                - ![](./img/1-5.virtual-dom.jpg)
-                - 变化：顺序的变化、层次的变化
-                - 这个场景下，我们就需要做一些 **`局部的更新`**
-                - 我们要 **`让程序自动去做这个事情`**，不需要让 用户去关心这些细节，不需要手动的去做这些事情, 这是一个非常大的挑战
-                    - > 因为 做两个 tree 的 diff , 它的标准算法 的复杂度 **`O(n³)`**
-                    - 这个算法复杂度是非常高的
-                    - 如果你在 浏览器 去运行计算 这么高的复杂度 的计算，那么就一定会 造成性能问题
-                - FaceBook 工程师 **`针对 UI 更新的特点，来进行算法的优化`**
-                    - 最终能够把这个 DOM Diff 算法复杂度 降低到了 **`O(n)`**, 是一个非常 巨大的提升
+        - ### Virtual DOM 是如何工作的
+            - ![](./img/1-5.virtual-dom.jpg)
+            - 变化：顺序的变化、层次的变化
+            - 这个场景下，我们就需要做一些 **`局部的更新`**
+            - 我们要 **`让程序自动去做这个事情`**，不需要让 用户去关心这些细节，不需要手动的去做这些事情, 这是一个非常大的挑战
+                - > 因为 做两个 tree 的 diff , 它的标准算法 的复杂度 **`O(n³)`**
+                - 这个算法复杂度是非常高的
+                - 如果你在 浏览器 去运行计算 这么高的复杂度 的计算，那么就一定会 造成性能问题
+            - FaceBook 工程师 **`针对 UI 更新的特点，来进行算法的优化`**
+                - 最终能够把这个 DOM Diff 算法复杂度 降低到了 **`O(n)`**, 是一个非常 巨大的提升
         - ### 那么 他究竟做了什么优化，来实现这么一个 高性能的算法呢？
             - ![](./img/1-5.Breadth-First-Search.jpg)
             - #### 广度优先分层比较
@@ -388,21 +532,21 @@
                     - 3.A节点的子节点G，由原来的圆形，变成了 方形，意思是 组件类型 发生了变化
                 - #### 那 针对这些 不同的变化，React 的 Diff 算法是有不同的处理方式
                     - ![](./img/1-5.1.jpg)
-                    - 1.从 根节点开始比较
+                    - #### 1.从 根节点开始比较
                     - ![](./img/1-5.2.jpg)
-                    - 2.顺序发生了变化
+                    - #### 2.顺序发生了变化
                         - 交换两个节点的位置
                             - 对于我们 来说，顺序发生了变化，我们只需要 将他们 交换一下顺序就可以了
                             - 但是，对于计算机来说，如果要交换他们的顺序，就要知道它们的 **`唯一标识`**
                                 - 而且，计算机 要知道 节点的顺序，首先也要先 按照 **`唯一标识`** 记录下它们的顺序，用来和 变化后的 tree 来对比，才知道 是否发生了变化
                     - ![](./img/1-5.3.jpg)
-                    - 3.节点类型发生变化
+                    - #### 3.节点类型发生变化
                         - A 下面的 F节点，变成了 G节点
                             - 当 React 遇到这种 情况的时候，
                             - 它会 **`直接把 F节点 删除`**，然后 创建一个新的 G节点，然后 append 到 A节点下面
                         - > 它 不会去管，你这个 F节点 是否被其他地方 用到 （React 不会去做这些检查），它 只会简单的把 F删掉 换成一个 G节点。(因为 去检查 会有额外的 计算量)
                     - ![](./img/1-5.4.jpg)
-                    - 4.节点跨层移动
+                    - #### 4.节点跨层移动
                         - 这是 react 核心优化的一种情况
                         - 例如：D节点 原来是 B的子节点，现在变成了 B节点 的 孙节点
                             - 这种情况下，我们如果是人工介入的话，我们是很容易知道，只要给 D节点 换一个 parent 就可以了
@@ -441,6 +585,1020 @@
     - ## 1-7 理解新的 Context API 及其使用场景
     - ## 1-8 使用脚手架工具创建 React 项目
     - ## 1-9 打包和部署
+
+
+
+- # 第2章 React初探
+- ## 1.环境搭建
+    - create-react-app 脚手架
+        - `npm i create-react-app -g` 全局安装脚手架
+        - `create-react-app --version` 查看版本
+        - `create-react-app project-name` 创建项目
+        - 创建项目时，会帮你下载依赖
+            - 所以不用自己 `npm install` 安装依赖了
+            - `cd project-name`
+            - `npm start` 启动项目
+            - `npm run build`
+                - Bundles the app into static files for production
+                - 将应用程序打包成静态文件用于生产
+            - `npm run eject` 弹出配置文件，可以自定义配置 webpack
+        - `npm i redux` 安装第三方库 redux
+
+- ## 2.React 组件分类
+    - 函数组件
+        ```jsx
+        import React from 'react'
+
+        // 定义 函数组件
+        fucntion tun (props) {
+            return <div>骑兵连连长{props.boss}</div>
+        }
+
+        class Home extends React.Component {
+            render () {
+                return (
+                    <div>标题</div>
+                    <tun boss='孙德胜'></tun>
+                )
+            }
+        }
+
+        export default Home
+        ```
+    - class 组件
+        ```jsx
+        import React from 'react'
+        import logo from '../assets/img/logo.svg'
+
+        class Home extends React.Component {
+            constructor (props) {   // 父子组件传值 , 接收props
+                super(props)    // 固定写法
+
+                this.state = {  // 组件数据
+                    msg: '我是一个组件',
+                    title: '我是一个title',
+
+                    list: ['1111', '2222', '3333'],
+                    list2: [
+                        <h2 key='1'>我是一个h2</h2>,
+                        <h2 key='2'>我是另一个h2</h2>,
+                    ]
+                }
+            }
+
+            render () {
+
+                let listResult = this.state.list.map( (value, key) => {
+                    return <li key={key}> {value} </li>
+                } )
+
+                return (
+                    <div>
+                        <h2>{this.state.msg}</h2>
+                        <div title={this.state.title}>div</div> {/* 绑定属性 */}
+
+                        <img src={logo} alt='' />
+                        <img src={require('../assets/img/logo.svg')} alt='' />
+                        <img src='https://google.com/1.jpg' alt='' />
+
+                        {/* for 数据循环 */}
+                        {this.state.list2}
+                        <ul>
+                            {listResult}
+                        </ul>
+                        {this.state.list}
+                    </div>
+                )
+            }
+        }
+
+        export default Home
+        ```
+
+- ## 3.React 创建组件、绑定属性（绑定class、绑定style）、引入图片、循环数组渲染数据
+    > JSX 中 绑定属性注意
+    - class 要换成 className
+    - for 要换成 htmlFor
+    - style
+        ```html
+        <div style={{'color': 'red'}}></div>
+        <div style={{ 'color': this.state.color }}></div>
+        ```
+    - 引入图片的两种方式
+        ```js
+        {/* 第一种方式 */}
+        import logo from '../assets/img/1.jpg'
+
+        <img src={logo} />
+
+        {/* 第二种方式 */}
+        <img src={require('../assets/img/1.jpg')} />
+
+        {/* 第三种方式  引入在线图片 */}
+        <img src='https://google.com/1.jpg' />
+        ```
+    - 数据循环
+        ```js
+        import React from 'react'
+
+        class Home extends React.Component {
+            constructor (props) {   // 父子组件传值 , 接收props
+                super(props)    // 固定写法
+
+                this.state = {  // 组件数据
+                    list: ['1111', '2222', '3333'],
+                    list2: [
+                        <h2 key='1'>我是一个h2</h2>,
+                        <h2 key='2'>我是另一个h2</h2>,
+                    ],
+                    list3: [
+                        {title: '新闻 11111'},
+                        {title: '新闻 22222'},
+                        {title: '新闻 33333'},
+                        {title: '新闻 44444'}
+                    ]
+                }
+            }
+
+            render () {
+
+                let listResult = this.state.list.map( (value, key) => {
+                    return <li key={key}> {value} </li>
+                } )
+
+                return (
+                    <div>
+                        {/* for 数据循环 方式一 */}
+                        {this.state.list2}
+
+                        {/* for 数据循环 方式二  先数据预处理  再展示 */}
+                        <ul>
+                            {listResult}
+                        </ul>
+
+                        {this.state.list}  {/* 这种写法 不能真正 数据循环 */}
+
+
+                        {/* for 数据循环 方式三 */}
+                        <ul>
+                            {
+                                this.state.list3.map( function(value, key){
+                                    return ( <li key={key}> {value.title} </li> )
+                                })
+                            }
+                        </ul>
+                    </div>
+                )
+            }
+        }
+
+        export default Home
+        ```
+
+- ## 4.React事件 方法、 React定义方法的几种方式 获取数据 改变数据 执行方法传值
+    - ### 1.定义 事件方法
+        - 在 `constructor()` 和 `render()` 平级的地方，定义方法就行
+            ```jsx
+            import react from 'react'
+
+            class News extends react.Component {
+                constructor (props) {
+                    super(props)
+
+                    this.state = {
+                        msg: '我是一个News组件'
+                    }
+                }
+
+                {/* 定义方法 */}
+                run(){
+                    alert('这是一个方法')
+                }
+
+                render(){
+                    return (
+                        <div>
+                            <h2>{this.state.msg}</h2>
+                            <button onClick={this.run}>执行方法</button>
+                            {/*
+                            注意：
+                                - 在 JSX 里调用方法的时候，在后面加 () 圆括号，是直接调用的意思
+                                - 像这样，才是在监听 等待触发事件 触发后 才执行对应方法 `<button onClick={this.run}>执行方法</button>`
+                            */}
+
+
+
+                        </div>
+                    )
+                }
+            }
+
+            export default News
+            ```
+            
+    - ### 2.如何改变state的数据？
+        - 通过 `this.setState` 来改变 state 数据
+        ```js
+        import react from 'react'
+
+        class SetData extends react.Component {
+            constructor (props) {
+                super(props)
+                this.state = {
+                    msg: 'this is msg'
+                }
+            }
+
+            setData = () => {
+                this.state.msg = '这是改变后的值2'  // 这种写法无效
+
+                this.setState({     // 有效写法
+                    msg: '这是改变后的值'
+                })
+            }
+
+            render(){
+                return (
+                    <div>
+                        <div>{this.state.msg}</div>
+                        <button onClick= {this.setData}>改变 state 的数据</button>
+                    </div>
+                )
+            }
+        }
+
+        export default SetData
+        ```
+    - ### 3.改变this指向的三种方法
+        - 如何 读取组件中的数据？
+        ```jsx
+        import react from 'react'
+
+        class News extends react.Component {
+            constructor (props) {
+                super(props)
+
+                this.state = {
+                    msg: '我是一个News组件',
+                    message: '这是第二种 读取数据的方法',
+                    name: '这是第三种 读取数据的方法'
+                }
+
+                // 第二种 获取数据 的方式
+                this.getMessage = this.getMessage.bind(this) // constructor 里面的 this 指向 class 自身
+                // console.log(this)
+            }
+
+            // 定义方法
+            run () {
+                alert('这是一个方法')
+            }
+
+            getData () {
+                // this 指向 undefined
+                alert(this.state.msg)   // TypeError: Cannot read property 'state' of undefined
+            }
+
+            // 第二种 通过 constructor 里面的 this，改变 this 指向
+            getMessage () {
+                alert(this.state.message)
+            }
+
+            // 第三种 读取数据的方法
+            // 通过 箭头函数 this 指向外部上下文
+            getName = () => {
+                alert(this.state.name)
+            }
+
+            render () {
+                return (
+                    <div>
+                        <h2>{this.state.msg}</h2>
+                        <button onClick={this.run}>执行方法</button>
+                        {/*
+                        注意：
+                            - 在 JSX 里调用方法的时候，在后面加 () 圆括号，是直接调用的意思
+                            - 像这样，才是在监听 等待触发事件 触发后 才执行对应方法 `<button onClick={this.run}>执行方法</button>`
+                        */}
+
+
+                        {/* 注意：直接调用 this.state.msg 会报错 */}
+                        <button onClick = {this.getData} >getData</button>
+
+                        {/* 读取组件中的数据的 三种方法 */}
+                        {/* 第一种 获取数据 的方式。通过 bind 改变this指向的方法 */}
+                        <button onClick = {this.getData.bind(this)} >第一种 获取数据 的方式</button>
+
+                        {/* 第二种 通过 constructor 里面的 this，改变 this 指向 */}
+                        <button onClick = {this.getMessage} >第二种 获取数据 的方式</button>
+
+                        {/* 第三种 通过 箭头函数 this 指向外部上下文 */}
+                        <button onClick = {this.getName} >第三种 获取数据 的方式</button>
+
+                        {/* 第四种 通过 onclick 中 再包含 箭头函数 */}
+                        <button onClick = {() => this.getName()} >第三种 获取数据 的方式</button>
+                    </div>
+                )
+            }
+        }
+
+        export default News
+        ```
+    
+    - ### 4.执行方法 function 如何传递参数？
+        - 通过 `bind` 方法来传参
+        ```jsx
+        import react from 'react'
+
+        class GetParms extends react.Component {
+            constructor (props) {
+                super(props)
+                this.state = {
+                    username: '李四'
+                }
+            }
+
+            getParms = (str, str2) => {
+                this.setState({     // 有效写法
+                    username: str + ' 和 ' + str2
+                })
+            }
+
+            render(){
+                return (
+                    <div>
+                        <div>{this.state.username}</div>
+                        <button onClick= {this.getParms.bind(this, '张三', '王五')}>function 传参</button>
+                    </div>
+                )
+            }
+        }
+
+        export default GetParms
+        ```
+        - ### 性能优化: onClick 执行方法 如何传参？
+            - [render中bind](#https://juejin.cn/post/6844903892736557064)
+            - 在 render 中直接bind。
+            - onClick 执行方法 如何传参？
+            - 因此总结下来如下：
+            ```jsx
+            render () {
+                return (
+                    <a onClick={this.clickEvent}>方法1 constructor绑定</a>
+                    <a onClick={() => this.clickEvent()}>方法2 箭头函数绑定</a>
+                    <a onClick={this.clickEvent.bind(this)}>方法3 直接绑定</a>
+                )
+            }
+            ```
+            - 性能对比:
+                > 首先，官方推荐第一种方法绑定this。那么接下来我们分析一下：
+                - 第一种方法，只在构造函数里面渲染一次，即实例化时执行一遍。
+                - 第二种方法，每一次render的时候，都会生成一个新的箭头函数。
+                - 第三种方法，每一次render的时候都会执行一次函数。
+
+            - 参考链接
+                - [render中bind](https://juejin.cn/post/6844903892736557064)
+                - [如何将事件处理器（比如 onClick）传递给组件？](https://zh-hans.reactjs.org/docs/faq-functions.html)
+                - [React组件优化](https://segmentfault.com/a/1190000016816130)
+            
+            - 方法1 constructor绑定
+                ```jsx
+                import react from 'react'
+                class one extends react.Component {
+                    constructor (props) {
+                        super(props)
+                        this.state = {
+                            soldiers: ['虎子', '柱子', '王根生']
+                        }
+                        this.addsoldier = this.addsoldier.bind(this)  // 方法1 constructor绑定
+                    }
+
+                    addsoldier () {
+                        console.log('add an other soldier')
+                        this.setState({
+                            soldiers: [...this.state.soldiers, '新兵蛋子']
+                        })
+                    }
+
+                    render () {
+                        return <div>士兵名：{this.state.soldiers[0]}</div>
+                    }
+                }
+                ```
+
+- ## 5. React 键盘事件、表单事件、事件对象、ref获取dom节点、React实现类似Vue的双向数据绑定
+    - ### 事件对象
+        - 在触发DOM上的某个事件时，会产生一个 **`事件对象 event`**。这个对象包含着所有与事件有关的信息
+        ```jsx
+        import react from 'react'
+
+        class Event extends react.Component {
+            constructor (props) {
+                super(props)
+                this.state = {
+                    msg: '事件对象演示'
+                }
+            }
+
+            run = (event) => {  // 获取 event 对象
+                console.log(event);
+                console.log(event.target)
+
+                event.target.style.background = 'red'      // 改变css
+                let aid = event.target.getAttribute('aid') // 获取节点属性值
+            }
+
+            render(){
+                return (
+                    <div>
+                        <div>{this.state.msg}</div>
+                        <button onClick= {this.run} aid='8899'>事件对象</button>
+                    </div>
+                )
+            }
+        }
+
+        export default Event
+        ```
+    - ### 表单事件
+        - 点击按钮，获取 input 的值，有下面几种方法
+            - 1.获取DOM节点，就能获取 input 的值
+            - 2.输入值时，如果能绑定到 state 里，也能获取 input 的值
+                - 监听 input 的改变事件，当 input 改变的时候，我们把 input 的值，赋值给 state 里的数据
+            ```js
+            import react from 'react'
+
+            class FormEvent extends react.Component {
+                constructor (props) {
+                    super(props)
+                    this.state = {
+                        msg: '表单事件演示'
+                    }
+                }
+
+                getValue = () => {
+                    console.log(this.state.msg);
+                }
+
+                inputChange = (e) => {
+                    console.log(e.target.value);
+                    this.setState({
+                        msg: e.target.value
+                    })
+                }
+
+                render(){
+                    return (
+                        <div>
+                            <div>{this.state.msg}</div>
+
+                            {/* 获取表单的值
+
+                            1、监听表单的改变事件                       onChange
+                            2、在改变的事件里面获取表单输入的值           事件对象
+                            3、把表单输入的值赋值给username             this.setState({})
+                            4、点击按钮的时候获取state里 面的username    this.state.msg
+                            */}
+                            <input onChange={this.inputChange}/>
+                            <button onClick= {this.getValue}>获取 input value</button>
+                        </div>
+                    )
+                }
+            }
+
+            export default FormEvent
+            ```
+
+    - ### ref获取dom节点
+        - react ref 获取DOM的三种方式
+            - stringRef
+            - methodRef
+            - objRef
+        ```jsx
+        import React from 'react'
+
+        export default class RefDemo extends React.Component {
+            constructor () {
+                super()
+                this.objRef = React.createRef() // React.createRef() 会创建这么个对象: { current: null }
+            }
+            componentDidMount() {
+                setTimeout(()=> {
+                    this.refs.stringRef.textContent = 'string ref got'
+                    this.methodRef.textContent = 'method ref got'
+                    this.objRef.current.textContent = 'obj ref got'
+                }, 1000)
+            }
+
+            render() {
+                return (
+                    <div>
+                        <p ref='stringRef'>span1</p>
+                        <p ref={ele => (this.methodRef = ele)}>span2</p> // ele 就是当前 DOM 节点/组件
+                        <p ref={this.objRef}>span3</p>
+                    </div>
+                )
+            }
+        }
+        ```
+        ```jsx
+        import React from 'react'
+
+        class Ref extends React.Component {
+            constructor(props) {
+                super(props);
+                this.state = { 
+                    username: ''
+                };
+            }
+
+            inputChange = () => {
+                /*
+                    获取dom节点
+
+                    1.给元素定义ref属性
+                        <input ref='name' />
+                    2.通过 this.refs.name 获取dom节点
+                */
+                let val = this.refs.username.value
+                this.setState({
+                    username: val
+                })
+            }
+
+            getInput = () => {
+                console.log(this.state.username);
+            }
+
+            render() {
+                return (
+                    <div>
+
+                        {/* 获取表单的值
+
+                        1、监听表单的改变事件                       onChange
+                        2、在改变的事件里面获取表单输入的值           ref获取
+                        3、把表单输入的值赋值给username             this.setState({})
+                        4、点击按钮的时候获取state里 面的username    this.state.msg
+                        */}
+                        <input ref='username' onChange={this.inputChange} />
+                        <button onClick={this.getInput}>获取 input 的值</button>
+                    </div>
+                )
+            }
+        }
+
+        export default Ref;
+        ```
+        - 报这样的警告 `Warning: A string ref, "userName", has been found within a strict mode tree. String refs are a source of potential bugs and should be avoided. We recommend using useRef() or createRef() instead.` 是因为开启了严格模式的原因，去掉即可。
+            ```js
+            ReactDOM.render(
+                <React.StrictMode>
+                    <App />
+                </React.StrictMode>,
+                document.getElementById('root')
+            );
+            ```
+
+    - ### 键盘事件
+        - 实现功能：当我按下 Enter 时，获取我 input 输入的值
+        ```jsx
+        import react from 'react'
+
+        class KeyUpEvent extends react.Component {
+            constructor(props) {
+                super(props);
+                this.state = {  };
+            }
+
+            inputKeyUp = (e) => {
+                console.log(e, e.keyCode);
+
+                // 实现：当我按下 Enter 时，获取我 input 输入的值
+                if(e.keyCode === 13){
+                    alert(e.target.value)
+                }
+            }
+
+            inputKeyDown = (e) => {
+                console.log(e, e.keyCode);
+
+                if(e.keyCode === 13){
+                    alert(e.target.value)
+                }
+            }
+
+            inputKeyPress = (e) => {
+                console.log(e.keyCode);
+
+                if(e.keyCode === 13){
+                    alert(e.target.value)
+                }
+            }
+
+            render() {
+                return (
+                    <div>
+                        <input onKeyUp={this.inputKeyUp} />
+                        <input onKeyUp={this.inputKeyDown} />
+                        <input onKeyUp={this.inputKeyPress} />
+                    </div>
+                );
+            }
+        }
+
+        export default KeyUpEvent;
+        ```
+    - ### React实现类似Vue的双向数据绑定
+        ```jsx
+        import React from 'react'
+
+        class DataBinding extends React.Component {
+            constructor(props) {
+                super(props);
+                this.state = {
+                    username: '张三'
+                };
+            }
+
+            inputChange = (e) => {
+                this.setState({
+                    username: e.target.value
+                })
+            }
+
+            setUsername = () => {
+                this.setState({
+                    username: '李四'
+                })
+            }
+
+            render() {
+                return (
+                    <div>
+                        <h2>双向数据绑定 React实现类似Vue的双向数据绑定</h2>
+
+                        {/* 什么是双向数据绑定？
+
+                            model 改变影响 View         --- React 帮我们实现了
+                            View 改变反过来影响 model    --- 需要我们直接实现
+                        */}
+                        
+                        <div>{this.state.username}</div>
+                        <input defaultValue={this.state.username} onChange={this.inputChange} />
+
+                        <button onClick={this.setUsername}>model 改变影响 View，改变 username 的值</button>
+                    </div>
+                );
+            }
+        }
+
+        export default DataBinding;
+        ```
+        - 报这样的警告： `Warning: You provided a "value" prop to a form field without an "onChange" handler. This will render a read-only field. If the field should be mutable use "defaultValue". Otherwise, set either "onChange" or "readOnly".`
+        - 是因为 input 默认值 使用了 value `<input value={this.state.username} />` ，`<input defaultValue={this.state.username} />`
+
+
+
+- ## 6.约束性和非约束性组件, React表单详解 input, text, checkbox, radio, select, textarea, 以及获取表单的内容
+    - ### 约束性和非约束性组件
+        - **`非约束性组件`**：
+            ```
+            <input type='text' defaultValue='a' >
+            ```
+            - 这个 **`defaultValue`** 其实就是原生DOM中定 value 属性。
+            - 这样写出来定组件，其value的值就是用户输入的内容，React完全不用管理输入的过程。
+        - **`约束性组件`**: 
+            ```
+            <input value={this.state.username} type='text' onChange={this.handleUsername} />
+            ```
+            - 这里，value 属性不再是一个写死的值，他是 `this.state.username` ,  `this.state.username` 是由于 `this.handleChange` 负责管理的。
+            - 这个时候实际上 input 的 value 根本不是用户输入的内容。而是 `onChange` 事件触发之后，由于 `this.setState` 导致了一次重新渲染。不过 React 会优化这个渲染过程。看上去有点
+    - ### React表单详解
+        -  input, text, checkbox, radio, select, textarea, 以及获取表单的内容
+        ```jsx
+        import React from 'react'
+
+        class ReactForm extends React.Component {
+            constructor(props) {
+                super(props);
+                this.state = {
+                    msg: 'Reat表单',
+                    name: '',       // input
+                    sex: '1',        // radio
+                    city: '',
+                    citys: [        // select
+                        '北京', '上海', '深圳'
+                    ],
+                    hobby: [        // checkBox
+                        {
+                            'title': '睡觉',
+                            'checked': true
+                        },
+                        {
+                            'title': '吃饭',
+                            'checked': false
+                        },
+                        {
+                            'title': '敲代码',
+                            'checked': false
+                        }
+                    ],
+                    info: ''        // textarea
+                };
+            }
+
+            handleSubmit = (e) => {
+                e.preventDefault()
+                console.log(this.state);
+                console.log(this.state.name, this.state.sex);
+            }
+
+            handleName = (e) => {
+                this.setState({
+                    name: e.target.value
+                })
+            }
+
+            handleSex = (e) => {
+                this.setState({
+                    sex: e.target.value
+                })
+            }
+
+            handleCity = (e) => {
+                this.setState({
+                    city: e.target.value
+                })
+            }
+
+            handleHobby = (key) => {
+                let hobby = this.state.hobby
+                hobby[key].checked = !hobby[key].checked
+                console.log(hobby, key);
+                this.setState({
+                    hobby
+                })
+            }
+
+            handleInfo = (e) => {
+                this.setState({
+                    info: e.target.value
+                })
+            }
+
+            render() {
+                return (
+                    <div>
+                        {/* 提交时，要阻止 form 默认提交事件 */}
+
+                        <h2>{this.state.msg}</h2>
+                        <div>{this.state.name}</div>
+                        <form onSubmit={this.handleSubmit}>
+                            用户名：<input type='text' value={this.state.name} onChange={this.handleName} /> <br/>
+
+                            性别： <input type='radio' value='1' checked={this.state.sex==='1'} onChange={this.handleSex} />男
+                                <input type='radio' value='2' checked={this.state.sex==='2'} onChange={this.handleSex} />女 <br/>
+
+                            居住城市：
+                                <select value={this.state.city} onChange={this.handleCity}>
+                                    {/* <option></option> */}
+                                    {
+                                        this.state.citys.map(function(val, key){
+                                            return <option key={key} >{val}</option>
+                                        })
+                                    }
+                                </select>
+                                <br/>
+                            爱好：
+                                {
+                                    this.state.hobby.map((val, key) => {
+                                        return (
+                                            <div key={key}>
+                                                {val.title} <input type='checkbox' checked={val.checked} onChange={this.handleHobby.bind(this, key)} />
+                                                {/* 逻辑： checked 改变时，会触发 onChange事件, onChange事件 再去改变 state 数据, 从而相应到 视图上 */}
+                                            </div>
+                                        )
+                                    })
+                                }
+                                <br/>
+                            备注：<textarea defaultValue={this.state.info} onChange={this.handleInfo} />
+
+                            <br/>
+                            <input type='submit' defaultValue='提交' />
+                        </form>
+                    </div>
+                );
+            }
+        }
+
+        export default ReactForm;
+        ```
+
+- ## 07 React实现Todolist练习 （上）（15分21秒）
+- ## 08 React实现Todolist练习 Todolist 待办事项 已经完成 （中）（22分8秒）
+- ## 09 React的模块化以及封装Storage实现todolist 待办事项 已经完成事项 以及实现数据持久化（下）（13分10秒）
+- ## 10.父子组件通信
+    > React中的组件、父子组件、React props父组件给子组件传值、子组件给父组件传值、父组件中通过refs获取子组件属性和方法 (34分3秒)
+    - React中的组件:解决html 标签构建应用的不足。
+    - 使用组件的好处:把公共的功能单独抽离成一个文件作为一个组件，哪里里使用哪里引入。
+    <br><br>
+    - ### 父子组件:组件的相互调用中，我们把调用者称为父组件，被调用者称为子组件
+        - 1.父子组件传值(react 父子组件通信) :
+            - 父组件给子组件传值
+                - 1.在调用子组件的时候定义一个属性 `<Header msg='首页'></Header>`
+                - 2.子组件里面 `this.props.msg`
+                - 说明:父组件不仅可以给子组件传值，还可以给子组件`传 function 方法`, 以及把整个父组件传给子组件, 可以让子组件给父组件传值。
+        - 2.父组件主动获取子组件的数据
+            - 1、父组件调用子组件的时候指定ref的值 `<Header ref='header'></Header>`
+            - 2、父组件通过 `this.refs.header` 获取整 个子组件实例 （ DOM(组件)加载完成以后获取 ）
+    - 思路：
+        - 只定义一个子组件，这个子组件 接收 父组件的传参，根据入参不同，子组件展示 的内容不同
+        ```jsx
+        // Child.js
+
+        import React from 'react'
+
+        class Child extends React.Component {
+            constructor(props) {
+                super(props);
+                this.state = {
+                    msg: '父组件 主动从子组件 获取的msg信息'
+                };
+            }
+
+            getNews = () => {
+                alert(this.props.news.state.msg)
+            }
+
+            render() {
+                return (
+                    <div>
+                        <div>{this.props.title}</div>
+                        <button onClick={this.props.run}>点击 执行父组件的run function</button>
+                        <button onClick={this.props.news.getData}>点击 执行父组件的 getData</button>
+                        <button onClick={this.getNews}>获取父组件的 state </button>
+                        <button onClick={this.props.news.getChildData.bind(this, '我是子组件的数据')}>子组件传数据 给父组件</button>
+                        
+                    </div>
+                );
+            }
+        }
+
+        export default Child;
+        ```
+        ```jsx
+        // NewsParent.js
+        
+        import React, { Component } from 'react'
+        import ChildOne from './childOne'
+
+        class NewsParent extends Component {
+            constructor(props) {
+                super(props);
+                this.state = {
+                    title: '新闻头部组件',
+                    msg: '我是父组件 News 的 msg'
+                };
+            }
+
+            run = () => {               // 子组件执行父组件的run function
+                alert('我是父组件的run方法')
+            }
+
+            getData = () => {           // 子组件执行父组件的 getData
+                alert(this.state.title)
+            }
+
+            getChildData = (res) => {   // 子传父 传参
+                console.log(res);
+                this.setState({ msg: res })
+            }
+
+            getChild = () => {          // 父组件主动获取子组件 的数据和方法
+                alert(this.refs.footer.state.msg)
+            }
+
+            render() {
+                return (
+                    <div>
+                        <div>{this.state.msg}</div>
+                        <ChildOne
+                            title={this.state.title}    // 父传子 传参
+                            run={this.run}              // 传方法
+                            news={this}                 // 传整个组件
+
+                            ref='footer'                // 父组件主动获取子组件
+                        />
+                        <button onClick={this.getChild}>父组件主动获取子组件</button>
+                    </div>
+                );
+            }
+        }
+
+        export default NewsParent;
+        ```
+        ```jsx
+        // ContentParent.js
+
+        import React from 'react'
+        import Child from './Child'
+
+        class ContentParent extends React.Component {
+            constructor(props) {
+                super(props);
+                this.state = {
+                    title: '内容头部组件'
+                };
+            }
+            render() {
+                return (
+                    <div>
+                        <Child title={this.state.title} />
+                    </div>
+                );
+            }
+        }
+
+        export default ContentParent;
+        ```
+
+- ## 11 propTypes 和 defaultProps
+    - 父组件给子组件传值：
+        - **`defaultProps`**: 父子组件传值中，如果父组件调用子组件的时候 不给子组件传值，则可以在子组件中使用 `defaultProps` 定义的默认值
+        - [**`propTypes`**](https://zh-hans.reactjs.org/docs/typechecking-with-proptypes.html#gatsby-focus-wrapper): 验证父组件传值的类型合法性
+        - 以上两个 属性 都是用在 子组件中的
+    ```jsx
+    import React from 'react'
+
+    class Child extends React.Component {
+        constructor(props) {
+            super(props);
+            this.state = {
+                msg: '子组件 的默认传值 defaultProps'
+            };
+        }
+
+        render() {
+            return (
+                <div>
+                    <div>{this.props.title}</div>
+                </div>
+            );
+        }
+    }
+
+    Child.defaultProps = {  // 定义的默认值
+        title: '默认标题'
+    }
+
+    export default Child;
+    ```
+    ```jsx
+    import React from 'react'
+    import PropTypes from 'prop-types'
+
+    class Child extends React.Component {
+        constructor(props) {
+            super(props);
+            this.state = {
+                msg: '子组件 的默认传值 defaultProps'
+            };
+        }
+
+        render() {
+            return (
+                <div>
+                    <div>{this.props.name}</div>
+                </div>
+            );
+        }
+    }
+
+    Child.propTypes = {  // 定义的默认值
+        name: PropTypes.string
+    }
+
+    export default Child;
+    ```
+    - 如果入参类型传错了：`Warning: Failed prop type: Invalid prop `name` of type `number` supplied to `Child`, expected `string`.`
+
+
+- ## 12 React 获取服务器数据 axios插件 fetch-jsonp插件的使用（26分15秒）
+
+- ## 14 React路由 react-router4.x的基本配置（19分54秒）
+- ## 15 React路由 react-router4.x 动态路由以及get传值 React中使用url模块（25分40秒）
+- ## 16 React【无人点餐无人收银系统案例】路由配置、菜品列表制作、请求数据渲染二维数组、 动态路由传值【基础项目】（31分8秒）
+- ## 17 React【无人点餐无人收银系统案例】菜品详情请求api渲染数据 以及解析Html【基础项目】（16分11秒）
+- ## 18 React 渲染数据注意事项、以及react-router4.x中使用js跳转路由（24分41秒）
+- ## 19 React  react-router4.x路由的嵌套（20分54秒）
+- ## 20 React react-router4.x中实现路由模块化、以及嵌套路由父子组件传值（29分4秒）
+- ## 21 React UI框架Antd(Ant Design)的使用 以及react Antd的使用 button组件 Ico
+- ## 22React UI框架 Antd (Ant Design)配置react-app-rewired按需加载Antd的css
+
+
+
+
 
 - # 第5章 Redux入门
     - ## Redux 使用总揽
@@ -2239,1080 +3397,8 @@
 
 -----
 
-- 目录
-    - [1.环境搭建](#1环境搭建)
-    - [2.React 组件分类](#2React-组件分类)
-    - [3.React 创建组件、绑定属性（绑定class、绑定style）、引入图片、循环数组渲染数据](#3React-创建组件绑定属性绑定class绑定style引入图片循环数组渲染数据)
-    - [4.React事件 方法、 React定义方法的几种方式 获取数据 改变数据 执行方法传值](#4React事件-方法-React定义方法的几种方式-获取数据-改变数据-执行方法传值)
-        - [2.如何改变state的数据？](#2如何改变state的数据)
-        - [3.如何改变state的数据？](#3改变this指向的三种方法)
-        - [4.执行方法 function 如何传递参数？](#4执行方法-function-如何传递参数)
-        - [性能优化: onClick 执行方法 如何传参？](#性能优化-onClick-执行方法-如何传参)
-    - [5.React 键盘事件 表单事件 事件对象以及React中的ref获取dom节点 、React实现类似Vue的双向数据绑定](#5React-键盘事件-表单事件-事件对象以及React中的ref获取dom节点-React实现类似Vue的双向数据绑定)
-        - 事件对象
-        - 键盘事件
-        - 表单事件
-        - ref获取dom节点
-        - React实现类似于vue双向数据绑定
-    - [6.React表单详解 约束性和非约束性组件 input text checkbox radio  select  textarea  以及获取表单的内容](#6React表单详解-约束性和非约束性组件-input-text-checkbox-radio--select--textarea--以及获取表单的内容)
-    - 07 React实现Todolist练习 （上）（15分21秒）
-    - 08 React实现Todolist练习 Todolist 待办事项 已经完成 （中）（22分8秒）
-    - 09 React的模块化以及封装Storage实现todolist 待办事项 已经完成事项 以及实现数据持久化（下）（13分10秒）
-    - 10 React中的组件、父子组件、React props父组件给子组件传值、子组件给父组件传值、父组件中通过refs获取子组件属性和方法(34分3秒)
-    - [13 React 生命周期函数](#13-React-生命周期函数)
+# Part 2 Old
 
 ----
 
-- [React 官网](https://zh-hans.reactjs.org/)
-- ## 1.环境搭建
-    - create-react-app 脚手架
-        - `npm i create-react-app -g` 全局安装脚手架
-        - `create-react-app --version` 查看版本
-        - `create-react-app project-name` 创建项目
-        - 创建项目时，会帮你下载依赖
-            - 所以不用自己 `npm install` 安装依赖了
-            - `cd project-name`
-            - `npm start` 启动项目
-            - `npm run build`
-                - Bundles the app into static files for production
-                - 将应用程序打包成静态文件用于生产
-            - `npm run eject` 弹出配置文件，可以自定义配置 webpack
-        - `npm i redux` 安装第三方库 redux
 
-- ## 2.React 组件分类
-    - 函数组件
-        ```jsx
-        import React from 'react'
-
-        // 定义 函数组件
-        fucntion tun (props) {
-            return <div>骑兵连连长{props.boss}</div>
-        }
-
-        class Home extends React.Component {
-            render () {
-                return (
-                    <div>标题</div>
-                    <tun boss='孙德胜'></tun>
-                )
-            }
-        }
-
-        export default Home
-        ```
-    - class 组件
-        ```jsx
-        import React from 'react'
-        import logo from '../assets/img/logo.svg'
-
-        class Home extends React.Component {
-            constructor (props) {   // 父子组件传值 , 接收props
-                super(props)    // 固定写法
-
-                this.state = {  // 组件数据
-                    msg: '我是一个组件',
-                    title: '我是一个title',
-
-                    list: ['1111', '2222', '3333'],
-                    list2: [
-                        <h2 key='1'>我是一个h2</h2>,
-                        <h2 key='2'>我是另一个h2</h2>,
-                    ]
-                }
-            }
-
-            render () {
-
-                let listResult = this.state.list.map( (value, key) => {
-                    return <li key={key}> {value} </li>
-                } )
-
-                return (
-                    <div>
-                        <h2>{this.state.msg}</h2>
-                        <div title={this.state.title}>div</div> {/* 绑定属性 */}
-
-                        <img src={logo} alt='' />
-                        <img src={require('../assets/img/logo.svg')} alt='' />
-                        <img src='https://google.com/1.jpg' alt='' />
-
-                        {/* for 数据循环 */}
-                        {this.state.list2}
-                        <ul>
-                            {listResult}
-                        </ul>
-                        {this.state.list}
-                    </div>
-                )
-            }
-        }
-
-        export default Home
-        ```
-
-- ## 3.React 创建组件、绑定属性（绑定class、绑定style）、引入图片、循环数组渲染数据
-    > JSX 中 绑定属性注意
-    - class 要换成 className
-    - for 要换成 htmlFor
-    - style
-        ```html
-        <div style={{'color': 'red'}}></div>
-        <div style={{ 'color': this.state.color }}></div>
-        ```
-    - 引入图片的两种方式
-        ```js
-        {/* 第一种方式 */}
-        import logo from '../assets/img/1.jpg'
-
-        <img src={logo} />
-
-        {/* 第二种方式 */}
-        <img src={require('../assets/img/1.jpg')} />
-
-        {/* 第三种方式  引入在线图片 */}
-        <img src='https://google.com/1.jpg' />
-        ```
-    - 数据循环
-        ```js
-        import React from 'react'
-
-        class Home extends React.Component {
-            constructor (props) {   // 父子组件传值 , 接收props
-                super(props)    // 固定写法
-
-                this.state = {  // 组件数据
-                    list: ['1111', '2222', '3333'],
-                    list2: [
-                        <h2 key='1'>我是一个h2</h2>,
-                        <h2 key='2'>我是另一个h2</h2>,
-                    ],
-                    list3: [
-                        {title: '新闻 11111'},
-                        {title: '新闻 22222'},
-                        {title: '新闻 33333'},
-                        {title: '新闻 44444'}
-                    ]
-                }
-            }
-
-            render () {
-
-                let listResult = this.state.list.map( (value, key) => {
-                    return <li key={key}> {value} </li>
-                } )
-
-                return (
-                    <div>
-                        {/* for 数据循环 方式一 */}
-                        {this.state.list2}
-
-                        {/* for 数据循环 方式二  先数据预处理  再展示 */}
-                        <ul>
-                            {listResult}
-                        </ul>
-
-                        {this.state.list}  {/* 这种写法 不能真正 数据循环 */}
-
-
-                        {/* for 数据循环 方式三 */}
-                        <ul>
-                            {
-                                this.state.list3.map( function(value, key){
-                                    return ( <li key={key}> {value.title} </li> )
-                                })
-                            }
-                        </ul>
-                    </div>
-                )
-            }
-        }
-
-        export default Home
-        ```
-
-- ## 4.React事件 方法、 React定义方法的几种方式 获取数据 改变数据 执行方法传值
-    - ### 1.定义 事件方法
-        - 在 `constructor()` 和 `render()` 平级的地方，定义方法就行
-            ```jsx
-            import react from 'react'
-
-            class News extends react.Component {
-                constructor (props) {
-                    super(props)
-
-                    this.state = {
-                        msg: '我是一个News组件'
-                    }
-                }
-
-                {/* 定义方法 */}
-                run(){
-                    alert('这是一个方法')
-                }
-
-                render(){
-                    return (
-                        <div>
-                            <h2>{this.state.msg}</h2>
-                            <button onClick={this.run}>执行方法</button>
-                            {/*
-                            注意：
-                                - 在 JSX 里调用方法的时候，在后面加 () 圆括号，是直接调用的意思
-                                - 像这样，才是在监听 等待触发事件 触发后 才执行对应方法 `<button onClick={this.run}>执行方法</button>`
-                            */}
-
-
-
-                        </div>
-                    )
-                }
-            }
-
-            export default News
-            ```
-            
-    - ### 2.如何改变state的数据？
-        - 通过 `this.setState` 来改变 state 数据
-        ```js
-        import react from 'react'
-
-        class SetData extends react.Component {
-            constructor (props) {
-                super(props)
-                this.state = {
-                    msg: 'this is msg'
-                }
-            }
-
-            setData = () => {
-                this.state.msg = '这是改变后的值2'  // 这种写法无效
-
-                this.setState({     // 有效写法
-                    msg: '这是改变后的值'
-                })
-            }
-
-            render(){
-                return (
-                    <div>
-                        <div>{this.state.msg}</div>
-                        <button onClick= {this.setData}>改变 state 的数据</button>
-                    </div>
-                )
-            }
-        }
-
-        export default SetData
-        ```
-    - ### 3.改变this指向的三种方法
-        - 如何 读取组件中的数据？
-        ```jsx
-        import react from 'react'
-
-        class News extends react.Component {
-            constructor (props) {
-                super(props)
-
-                this.state = {
-                    msg: '我是一个News组件',
-                    message: '这是第二种 读取数据的方法',
-                    name: '这是第三种 读取数据的方法'
-                }
-
-                // 第二种 获取数据 的方式
-                this.getMessage = this.getMessage.bind(this) // constructor 里面的 this 指向 class 自身
-                // console.log(this)
-            }
-
-            // 定义方法
-            run () {
-                alert('这是一个方法')
-            }
-
-            getData () {
-                // this 指向 undefined
-                alert(this.state.msg)   // TypeError: Cannot read property 'state' of undefined
-            }
-
-            // 第二种 通过 constructor 里面的 this，改变 this 指向
-            getMessage () {
-                alert(this.state.message)
-            }
-
-            // 第三种 读取数据的方法
-            // 通过 箭头函数 this 指向外部上下文
-            getName = () => {
-                alert(this.state.name)
-            }
-
-            render () {
-                return (
-                    <div>
-                        <h2>{this.state.msg}</h2>
-                        <button onClick={this.run}>执行方法</button>
-                        {/*
-                        注意：
-                            - 在 JSX 里调用方法的时候，在后面加 () 圆括号，是直接调用的意思
-                            - 像这样，才是在监听 等待触发事件 触发后 才执行对应方法 `<button onClick={this.run}>执行方法</button>`
-                        */}
-
-
-                        {/* 注意：直接调用 this.state.msg 会报错 */}
-                        <button onClick = {this.getData} >getData</button>
-
-                        {/* 读取组件中的数据的 三种方法 */}
-                        {/* 第一种 获取数据 的方式。通过 bind 改变this指向的方法 */}
-                        <button onClick = {this.getData.bind(this)} >第一种 获取数据 的方式</button>
-
-                        {/* 第二种 通过 constructor 里面的 this，改变 this 指向 */}
-                        <button onClick = {this.getMessage} >第二种 获取数据 的方式</button>
-
-                        {/* 第三种 通过 箭头函数 this 指向外部上下文 */}
-                        <button onClick = {this.getName} >第三种 获取数据 的方式</button>
-
-                        {/* 第四种 通过 onclick 中 再包含 箭头函数 */}
-                        <button onClick = {() => this.getName()} >第三种 获取数据 的方式</button>
-                    </div>
-                )
-            }
-        }
-
-        export default News
-        ```
-    
-    - ### 4.执行方法 function 如何传递参数？
-        - 通过 `bind` 方法来传参
-        ```jsx
-        import react from 'react'
-
-        class GetParms extends react.Component {
-            constructor (props) {
-                super(props)
-                this.state = {
-                    username: '李四'
-                }
-            }
-
-            getParms = (str, str2) => {
-                this.setState({     // 有效写法
-                    username: str + ' 和 ' + str2
-                })
-            }
-
-            render(){
-                return (
-                    <div>
-                        <div>{this.state.username}</div>
-                        <button onClick= {this.getParms.bind(this, '张三', '王五')}>function 传参</button>
-                    </div>
-                )
-            }
-        }
-
-        export default GetParms
-        ```
-        - ### 性能优化: onClick 执行方法 如何传参？
-            - [render中bind](#https://juejin.cn/post/6844903892736557064)
-            - 在 render 中直接bind。
-            - onClick 执行方法 如何传参？
-            - 因此总结下来如下：
-            ```jsx
-            render () {
-                return (
-                    <a onClick={this.clickEvent}>方法1 constructor绑定</a>
-                    <a onClick={() => this.clickEvent()}>方法2 箭头函数绑定</a>
-                    <a onClick={this.clickEvent.bind(this)}>方法3 直接绑定</a>
-                )
-            }
-            ```
-            - 性能对比:
-                > 首先，官方推荐第一种方法绑定this。那么接下来我们分析一下：
-                - 第一种方法，只在构造函数里面渲染一次，即实例化时执行一遍。
-                - 第二种方法，每一次render的时候，都会生成一个新的箭头函数。
-                - 第三种方法，每一次render的时候都会执行一次函数。
-
-            - 参考链接
-                - [render中bind](https://juejin.cn/post/6844903892736557064)
-                - [如何将事件处理器（比如 onClick）传递给组件？](https://zh-hans.reactjs.org/docs/faq-functions.html)
-                - [React组件优化](https://segmentfault.com/a/1190000016816130)
-            
-            - 方法1 constructor绑定
-                ```jsx
-                import react from 'react'
-                class one extends react.Component {
-                    constructor (props) {
-                        super(props)
-                        this.state = {
-                            soldiers: ['虎子', '柱子', '王根生']
-                        }
-                        this.addsoldier = this.addsoldier.bind(this)  // 方法1 constructor绑定
-                    }
-
-                    addsoldier () {
-                        console.log('add an other soldier')
-                        this.setState({
-                            soldiers: [...this.state.soldiers, '新兵蛋子']
-                        })
-                    }
-
-                    render () {
-                        return <div>士兵名：{this.state.soldiers[0]}</div>
-                    }
-                }
-                ```
-
-- ## 5. React 键盘事件、表单事件、事件对象、ref获取dom节点、React实现类似Vue的双向数据绑定
-    - ### 事件对象
-        - 在触发DOM上的某个事件时，会产生一个 **`事件对象 event`**。这个对象包含着所有与事件有关的信息
-        ```jsx
-        import react from 'react'
-
-        class Event extends react.Component {
-            constructor (props) {
-                super(props)
-                this.state = {
-                    msg: '事件对象演示'
-                }
-            }
-
-            run = (event) => {  // 获取 event 对象
-                console.log(event);
-                console.log(event.target)
-
-                event.target.style.background = 'red'      // 改变css
-                let aid = event.target.getAttribute('aid') // 获取节点属性值
-            }
-
-            render(){
-                return (
-                    <div>
-                        <div>{this.state.msg}</div>
-                        <button onClick= {this.run} aid='8899'>事件对象</button>
-                    </div>
-                )
-            }
-        }
-
-        export default Event
-        ```
-    - ### 表单事件
-        - 点击按钮，获取 input 的值，有下面几种方法
-            - 1.获取DOM节点，就能获取 input 的值
-            - 2.输入值时，如果能绑定到 state 里，也能获取 input 的值
-                - 监听 input 的改变事件，当 input 改变的时候，我们把 input 的值，赋值给 state 里的数据
-            ```js
-            import react from 'react'
-
-            class FormEvent extends react.Component {
-                constructor (props) {
-                    super(props)
-                    this.state = {
-                        msg: '表单事件演示'
-                    }
-                }
-
-                getValue = () => {
-                    console.log(this.state.msg);
-                }
-
-                inputChange = (e) => {
-                    console.log(e.target.value);
-                    this.setState({
-                        msg: e.target.value
-                    })
-                }
-
-                render(){
-                    return (
-                        <div>
-                            <div>{this.state.msg}</div>
-
-                            {/* 获取表单的值
-
-                            1、监听表单的改变事件                       onChange
-                            2、在改变的事件里面获取表单输入的值           事件对象
-                            3、把表单输入的值赋值给username             this.setState({})
-                            4、点击按钮的时候获取state里 面的username    this.state.msg
-                            */}
-                            <input onChange={this.inputChange}/>
-                            <button onClick= {this.getValue}>获取 input value</button>
-                        </div>
-                    )
-                }
-            }
-
-            export default FormEvent
-            ```
-
-    - ### ref获取dom节点
-        ```jsx
-        import React from 'react'
-
-        class Ref extends React.Component {
-            constructor(props) {
-                super(props);
-                this.state = { 
-                    username: ''
-                };
-            }
-
-            inputChange = () => {
-                /*
-                    获取dom节点
-
-                    1.给元素定义ref属性
-                        <input ref='name' />
-                    2.通过 this.refs.name 获取dom节点
-                */
-                let val = this.refs.username.value
-                this.setState({
-                    username: val
-                })
-            }
-
-            getInput = () => {
-                console.log(this.state.username);
-            }
-
-            render() {
-                return (
-                    <div>
-
-                        {/* 获取表单的值
-
-                        1、监听表单的改变事件                       onChange
-                        2、在改变的事件里面获取表单输入的值           ref获取
-                        3、把表单输入的值赋值给username             this.setState({})
-                        4、点击按钮的时候获取state里 面的username    this.state.msg
-                        */}
-                        <input ref='username' onChange={this.inputChange} />
-                        <button onClick={this.getInput}>获取 input 的值</button>
-                    </div>
-                )
-            }
-        }
-
-        export default Ref;
-        ```
-        - 报这样的警告 `Warning: A string ref, "userName", has been found within a strict mode tree. String refs are a source of potential bugs and should be avoided. We recommend using useRef() or createRef() instead.` 是因为开启了严格模式的原因，去掉即可。
-            ```js
-            ReactDOM.render(
-                <React.StrictMode>
-                    <App />
-                </React.StrictMode>,
-                document.getElementById('root')
-            );
-            ```
-
-    - ### 键盘事件
-        - 实现功能：当我按下 Enter 时，获取我 input 输入的值
-        ```jsx
-        import react from 'react'
-
-        class KeyUpEvent extends react.Component {
-            constructor(props) {
-                super(props);
-                this.state = {  };
-            }
-
-            inputKeyUp = (e) => {
-                console.log(e, e.keyCode);
-
-                // 实现：当我按下 Enter 时，获取我 input 输入的值
-                if(e.keyCode === 13){
-                    alert(e.target.value)
-                }
-            }
-
-            inputKeyDown = (e) => {
-                console.log(e, e.keyCode);
-
-                if(e.keyCode === 13){
-                    alert(e.target.value)
-                }
-            }
-
-            inputKeyPress = (e) => {
-                console.log(e.keyCode);
-
-                if(e.keyCode === 13){
-                    alert(e.target.value)
-                }
-            }
-
-            render() {
-                return (
-                    <div>
-                        <input onKeyUp={this.inputKeyUp} />
-                        <input onKeyUp={this.inputKeyDown} />
-                        <input onKeyUp={this.inputKeyPress} />
-                    </div>
-                );
-            }
-        }
-
-        export default KeyUpEvent;
-        ```
-    - ### React实现类似Vue的双向数据绑定
-        ```jsx
-        import React from 'react'
-
-        class DataBinding extends React.Component {
-            constructor(props) {
-                super(props);
-                this.state = {
-                    username: '张三'
-                };
-            }
-
-            inputChange = (e) => {
-                this.setState({
-                    username: e.target.value
-                })
-            }
-
-            setUsername = () => {
-                this.setState({
-                    username: '李四'
-                })
-            }
-
-            render() {
-                return (
-                    <div>
-                        <h2>双向数据绑定 React实现类似Vue的双向数据绑定</h2>
-
-                        {/* 什么是双向数据绑定？
-
-                            model 改变影响 View         --- React 帮我们实现了
-                            View 改变反过来影响 model    --- 需要我们直接实现
-                        */}
-                        
-                        <div>{this.state.username}</div>
-                        <input defaultValue={this.state.username} onChange={this.inputChange} />
-
-                        <button onClick={this.setUsername}>model 改变影响 View，改变 username 的值</button>
-                    </div>
-                );
-            }
-        }
-
-        export default DataBinding;
-        ```
-        - 报这样的警告： `Warning: You provided a "value" prop to a form field without an "onChange" handler. This will render a read-only field. If the field should be mutable use "defaultValue". Otherwise, set either "onChange" or "readOnly".`
-        - 是因为 input 默认值 使用了 value `<input value={this.state.username} />` ，`<input defaultValue={this.state.username} />`
-
-
-
-- ## 6.约束性和非约束性组件, React表单详解 input, text, checkbox, radio, select, textarea, 以及获取表单的内容
-    - ### 约束性和非约束性组件
-        - **`非约束性组件`**：
-            ```
-            <input type='text' defaultValue='a' >
-            ```
-            - 这个 **`defaultValue`** 其实就是原生DOM中定 value 属性。
-            - 这样写出来定组件，其value的值就是用户输入的内容，React完全不用管理输入的过程。
-        - **`约束性组件`**: 
-            ```
-            <input value={this.state.username} type='text' onChange={this.handleUsername} />
-            ```
-            - 这里，value 属性不再是一个写死的值，他是 `this.state.username` ,  `this.state.username` 是由于 `this.handleChange` 负责管理的。
-            - 这个时候实际上 input 的 value 根本不是用户输入的内容。而是 `onChange` 事件触发之后，由于 `this.setState` 导致了一次重新渲染。不过 React 会优化这个渲染过程。看上去有点
-    - ### React表单详解
-        -  input, text, checkbox, radio, select, textarea, 以及获取表单的内容
-        ```jsx
-        import React from 'react'
-
-        class ReactForm extends React.Component {
-            constructor(props) {
-                super(props);
-                this.state = {
-                    msg: 'Reat表单',
-                    name: '',       // input
-                    sex: '1',        // radio
-                    city: '',
-                    citys: [        // select
-                        '北京', '上海', '深圳'
-                    ],
-                    hobby: [        // checkBox
-                        {
-                            'title': '睡觉',
-                            'checked': true
-                        },
-                        {
-                            'title': '吃饭',
-                            'checked': false
-                        },
-                        {
-                            'title': '敲代码',
-                            'checked': false
-                        }
-                    ],
-                    info: ''        // textarea
-                };
-            }
-
-            handleSubmit = (e) => {
-                e.preventDefault()
-                console.log(this.state);
-                console.log(this.state.name, this.state.sex);
-            }
-
-            handleName = (e) => {
-                this.setState({
-                    name: e.target.value
-                })
-            }
-
-            handleSex = (e) => {
-                this.setState({
-                    sex: e.target.value
-                })
-            }
-
-            handleCity = (e) => {
-                this.setState({
-                    city: e.target.value
-                })
-            }
-
-            handleHobby = (key) => {
-                let hobby = this.state.hobby
-                hobby[key].checked = !hobby[key].checked
-                console.log(hobby, key);
-                this.setState({
-                    hobby
-                })
-            }
-
-            handleInfo = (e) => {
-                this.setState({
-                    info: e.target.value
-                })
-            }
-
-            render() {
-                return (
-                    <div>
-                        {/* 提交时，要阻止 form 默认提交事件 */}
-
-                        <h2>{this.state.msg}</h2>
-                        <div>{this.state.name}</div>
-                        <form onSubmit={this.handleSubmit}>
-                            用户名：<input type='text' value={this.state.name} onChange={this.handleName} /> <br/>
-
-                            性别： <input type='radio' value='1' checked={this.state.sex==='1'} onChange={this.handleSex} />男
-                                <input type='radio' value='2' checked={this.state.sex==='2'} onChange={this.handleSex} />女 <br/>
-
-                            居住城市：
-                                <select value={this.state.city} onChange={this.handleCity}>
-                                    {/* <option></option> */}
-                                    {
-                                        this.state.citys.map(function(val, key){
-                                            return <option key={key} >{val}</option>
-                                        })
-                                    }
-                                </select>
-                                <br/>
-                            爱好：
-                                {
-                                    this.state.hobby.map((val, key) => {
-                                        return (
-                                            <div key={key}>
-                                                {val.title} <input type='checkbox' checked={val.checked} onChange={this.handleHobby.bind(this, key)} />
-                                                {/* 逻辑： checked 改变时，会触发 onChange事件, onChange事件 再去改变 state 数据, 从而相应到 视图上 */}
-                                            </div>
-                                        )
-                                    })
-                                }
-                                <br/>
-                            备注：<textarea defaultValue={this.state.info} onChange={this.handleInfo} />
-
-                            <br/>
-                            <input type='submit' defaultValue='提交' />
-                        </form>
-                    </div>
-                );
-            }
-        }
-
-        export default ReactForm;
-        ```
-
-- ## 07 React实现Todolist练习 （上）（15分21秒）
-- ## 08 React实现Todolist练习 Todolist 待办事项 已经完成 （中）（22分8秒）
-- ## 09 React的模块化以及封装Storage实现todolist 待办事项 已经完成事项 以及实现数据持久化（下）（13分10秒）
-- ## 10.父子组件通信
-    > React中的组件、父子组件、React props父组件给子组件传值、子组件给父组件传值、父组件中通过refs获取子组件属性和方法 (34分3秒)
-    - React中的组件:解决html 标签构建应用的不足。
-    - 使用组件的好处:把公共的功能单独抽离成一个文件作为一个组件，哪里里使用哪里引入。
-    <br><br>
-    - ### 父子组件:组件的相互调用中，我们把调用者称为父组件，被调用者称为子组件
-        - 1.父子组件传值(react 父子组件通信) :
-            - 父组件给子组件传值
-                - 1.在调用子组件的时候定义一个属性 `<Header msg='首页'></Header>`
-                - 2.子组件里面 `this.props.msg`
-                - 说明:父组件不仅可以给子组件传值，还可以给子组件`传 function 方法`, 以及把整个父组件传给子组件, 可以让子组件给父组件传值。
-        - 2.父组件主动获取子组件的数据
-            - 1、父组件调用子组件的时候指定ref的值 `<Header ref='header'></Header>`
-            - 2、父组件通过 `this.refs.header` 获取整 个子组件实例 （ DOM(组件)加载完成以后获取 ）
-    - 思路：
-        - 只定义一个子组件，这个子组件 接收 父组件的传参，根据入参不同，子组件展示 的内容不同
-        ```jsx
-        // Child.js
-
-        import React from 'react'
-
-        class Child extends React.Component {
-            constructor(props) {
-                super(props);
-                this.state = {
-                    msg: '父组件 主动从子组件 获取的msg信息'
-                };
-            }
-
-            getNews = () => {
-                alert(this.props.news.state.msg)
-            }
-
-            render() {
-                return (
-                    <div>
-                        <div>{this.props.title}</div>
-                        <button onClick={this.props.run}>点击 执行父组件的run function</button>
-                        <button onClick={this.props.news.getData}>点击 执行父组件的 getData</button>
-                        <button onClick={this.getNews}>获取父组件的 state </button>
-                        <button onClick={this.props.news.getChildData.bind(this, '我是子组件的数据')}>子组件传数据 给父组件</button>
-                        
-                    </div>
-                );
-            }
-        }
-
-        export default Child;
-        ```
-        ```jsx
-        // NewsParent.js
-        
-        import React, { Component } from 'react'
-        import ChildOne from './childOne'
-
-        class NewsParent extends Component {
-            constructor(props) {
-                super(props);
-                this.state = {
-                    title: '新闻头部组件',
-                    msg: '我是父组件 News 的 msg'
-                };
-            }
-
-            run = () => {               // 子组件执行父组件的run function
-                alert('我是父组件的run方法')
-            }
-
-            getData = () => {           // 子组件执行父组件的 getData
-                alert(this.state.title)
-            }
-
-            getChildData = (res) => {   // 子传父 传参
-                console.log(res);
-                this.setState({ msg: res })
-            }
-
-            getChild = () => {          // 父组件主动获取子组件 的数据和方法
-                alert(this.refs.footer.state.msg)
-            }
-
-            render() {
-                return (
-                    <div>
-                        <div>{this.state.msg}</div>
-                        <ChildOne
-                            title={this.state.title}    // 父传子 传参
-                            run={this.run}              // 传方法
-                            news={this}                 // 传整个组件
-
-                            ref='footer'                // 父组件主动获取子组件
-                        />
-                        <button onClick={this.getChild}>父组件主动获取子组件</button>
-                    </div>
-                );
-            }
-        }
-
-        export default NewsParent;
-        ```
-        ```jsx
-        // ContentParent.js
-
-        import React from 'react'
-        import Child from './Child'
-
-        class ContentParent extends React.Component {
-            constructor(props) {
-                super(props);
-                this.state = {
-                    title: '内容头部组件'
-                };
-            }
-            render() {
-                return (
-                    <div>
-                        <Child title={this.state.title} />
-                    </div>
-                );
-            }
-        }
-
-        export default ContentParent;
-        ```
-
-- ## 11 propTypes 和 defaultProps
-    - 父组件给子组件传值：
-        - **`defaultProps`**: 父子组件传值中，如果父组件调用子组件的时候 不给子组件传值，则可以在子组件中使用 `defaultProps` 定义的默认值
-        - [**`propTypes`**](https://zh-hans.reactjs.org/docs/typechecking-with-proptypes.html#gatsby-focus-wrapper): 验证父组件传值的类型合法性
-        - 以上两个 属性 都是用在 子组件中的
-    ```jsx
-    import React from 'react'
-
-    class Child extends React.Component {
-        constructor(props) {
-            super(props);
-            this.state = {
-                msg: '子组件 的默认传值 defaultProps'
-            };
-        }
-
-        render() {
-            return (
-                <div>
-                    <div>{this.props.title}</div>
-                </div>
-            );
-        }
-    }
-
-    Child.defaultProps = {  // 定义的默认值
-        title: '默认标题'
-    }
-
-    export default Child;
-    ```
-    ```jsx
-    import React from 'react'
-    import PropTypes from 'prop-types'
-
-    class Child extends React.Component {
-        constructor(props) {
-            super(props);
-            this.state = {
-                msg: '子组件 的默认传值 defaultProps'
-            };
-        }
-
-        render() {
-            return (
-                <div>
-                    <div>{this.props.name}</div>
-                </div>
-            );
-        }
-    }
-
-    Child.propTypes = {  // 定义的默认值
-        name: PropTypes.string
-    }
-
-    export default Child;
-    ```
-    - 如果入参类型传错了：`Warning: Failed prop type: Invalid prop `name` of type `number` supplied to `Child`, expected `string`.`
-
-
-- ## 12 React 获取服务器数据 axios插件 fetch-jsonp插件的使用（26分15秒）
-- ## 13 React 生命周期函数
-    ![](./img/life.jpg)
-    - [React v16.3之后的组件生命周期函数](https://zhuanlan.zhihu.com/p/38030418)
-        - React v16.3虽然是一个小版本升级，但是却对React组件生命周期函数有巨大变化
-    ```
-    生命周期函数
-
-        - 装配 / 初始化
-            constructor
-            static getDerivedStateFromProps
-            componentWillMount / UNSAFE_componentWillMount
-            render
-            componentDidMount
-
-        - 更新 / 组件重新渲染
-            componentWillReceiveProps / UNSAFE_...
-            static getDerivedStateFromProps
-            shouldComponentUpdate
-            componentWillUpdate / UNSAFE_...
-            render
-            getSnapshotBeforeUpdate
-            componentDidUpdate
-
-        - 卸载
-            componentWillUnmount
-    ```
-    ```js
-    class App extends react.Component {
-
-        // 首先被执行
-        constructor(){}
-
-        // 准备：即将被加载
-        componentWillMount() {}
-
-        // 渲染中
-        render()
-
-        // 已插入真实DOM
-        componentDidMount() {}
-
-        // 准备：即将被重新渲染，状态未变化
-        componentWillUpdate(nextProps, nextState) {}
-
-        // 完成：正在被重新渲染，状态已变化
-        componentDidUpdate(prevProps, prevState) {}
-
-        // 已加载组件，收到新属性时调用
-        componentWillReceiveProps(nextProps) {}
-
-        // 组件将被卸载
-        componentWillUnmount() {}
-
-        // 组件将被卸载
-        componentWillUnmount() {}
-
-    }
-    ```
-    ```js
-    React 更新方式：
-        - 1.setState
-        - 2.forceState ? 还是 forceUpdate() ?  // 强制更新
-            - react强制重新渲染: 在react中，state和props数据更新，就会重新render，但是当层级过深时，可能就不会触发渲染，这时候就要用到 this.forceUpdate();
-
-        - 3.父组件更新，会带动 子组件更新
-            - 如：父组件 App 下面有个 Text子组件，如果 父组件更新，子组件也会跟着更新
-    ```
-- ## 14 React路由 react-router4.x的基本配置（19分54秒）
-- ## 15 React路由 react-router4.x 动态路由以及get传值 React中使用url模块（25分40秒）
-- ## 16 React【无人点餐无人收银系统案例】路由配置、菜品列表制作、请求数据渲染二维数组、 动态路由传值【基础项目】（31分8秒）
-- ## 17 React【无人点餐无人收银系统案例】菜品详情请求api渲染数据 以及解析Html【基础项目】（16分11秒）
-- ## 18 React 渲染数据注意事项、以及react-router4.x中使用js跳转路由（24分41秒）
-- ## 19 React  react-router4.x路由的嵌套（20分54秒）
-- ## 20 React react-router4.x中实现路由模块化、以及嵌套路由父子组件传值（29分4秒）
-- ## 21 React UI框架Antd(Ant Design)的使用 以及react Antd的使用 button组件 Ico
-- ## 22React UI框架 Antd (Ant Design)配置react-app-rewired按需加载Antd的css
-
-
-
-```js
-componentWillReceiveProps (nextProps) {
-    if (nextProps.attendanceStatusList !== this.state.attendanceStatusList) {
-        console.log('参数变化了 ', nextProps.attendanceStatusList);
-        this.setState({ attendanceStatusList: nextProps.attendanceStatusList })
-    }
-}
-```
