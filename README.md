@@ -3,6 +3,7 @@
 ----
 - [React 官网](https://zh-hans.reactjs.org/)
 - 学习资源
+    - [【拉勾】前端面试宝典之 React 篇](https://www.youtube.com/watch?v=YGrctw-R30o&list=PL5d0qARooeQh2IyWiwgdwi0KXmJdUAP46&index=1)
     - 【幕课】React16.4 开发简书项目 从零基础入门到实战
     - [【BiliBili】React教程_React router4.x Antd Flux入门实战视频教程 【2018.12.17】](https://www.bilibili.com/video/BV1yt411e7NB)
     - 10-React 从入门到精通 【实战进阶45讲】【极客时间】【完结】
@@ -11,6 +12,9 @@
 - 后台模版
     - [Ant Design Pro 后台模版 - 是一个企业级中后台前端/设计解决方案](https://pro.ant.design/docs/getting-started-cn)
     - [Awesome dashboards - 后台模版集合 与 它们的技术栈](https://github.com/omarkdev/awesome-dashboards)
+
+-----
+
 
 - 目录
     - [第1章 React基础](#第1章-React基础)
@@ -29,7 +33,7 @@
         - [1-3 JSX 的本质不是模板引擎，而是语法糖](#1-3-JSX-的本质不是模板引擎，而是语法糖)
             - []()
             - []()
-        - [1-4 React组件的生命周期及其使用场景](#1-4-React组件的生命周期及其使用场景)
+        - [1-4 生命周期](#1-4-生命周期)
             - [React 生命周期函数](#React-生命周期函数)
         - [1-5 理解 Virtual DOM 及 key 属性的作用](#1-5-理解-Virtual-DOM-及-key-属性的作用)
             - [Virtual DOM 是如何工作的](#Virtual-DOM-是如何工作的)
@@ -384,7 +388,55 @@
 
 
 
-    - ## 1-4 React组件的生命周期及其使用场景
+    - ## 1-4 生命周期
+        - 相关学习资料
+            - [02 | 为什么 React 16 要更改组件的生命周期？（上）](https://www.youtube.com/watch?v=KNPZIP0Pj9o&list=PL5d0qARooeQhvlyGbk8tku92CjmbehYiK)
+            - [03 | 为什么 React 16 要更改组件的生命周期？（下）](https://www.youtube.com/watch?v=VZLBXrdqUP4&list=PL5d0qARooeQhvlyGbk8tku92CjmbehYiK&index=2)
+        - ### 初步理解 React 框架中的一些关键 设计思想
+            - "`组件`" 和 "`虚拟DOM`" 这两个关键词的出镜率 是非常高的，它们是 React 基本原理中极为关键的两个概念，也是我们这个小节的学习切入点
+                - ![虚拟DOM核心算法的基石](./img/1-4.virtualDOM.jpg)
+                - #### 组件化: 工程化思想在框架中的落地
+                    - 组件化是React团队在研发效能方面所做的一个重要的努力
+                    - 几乎所有的 可见/不可见 的内容都可以被抽离为各种各样的组件，每个组件 既是 "`封闭`" 的, 也是 "`开放`" 的
+                        - ##### **`封闭`**
+                            - 针对 `"渲染工作流"` 来说的
+                            - 在组件自身的 渲染工作流中，每个组件都只处理 它内部的渲染逻辑
+                            - 在没有 数据流交互 的情况下，组件 与 组件之间, 可以做到 各自为政
+                        - ##### **`开放`**
+                            - 针对 `"组件间通信"` 来说的
+                            - React 允许开发者基于 `"单向数据流"` 的原则, 完成组件间的通信
+                            - 而组件之间的通信 又将改变通信 双方/某一方 内部的数据, 进而对渲染结果构成影响
+                    - 这一 开放, 与 封闭 的特性, 使得 React 既专注 又 灵活, 具备高度 **`可重用性`** 和 **`可维护性`**
+                - #### 生命周期方法 的本质: 组件的 "灵魂" 与 "躯干"
+                    - **`render 方法 是 React 组件的 "灵魂"`**
+                        - 注意⚠️: 这里说的 render 可不是 ReactDOM.render, 而是 生命周期函数中的 render 方法
+                        - VirtualDOM 的生成 都要仰仗 render 方法
+                        - 渲染工作流 的实现也同样 离不开 render
+                            >  ps: **`渲染工作流`**: 指的是从 **`组件数据改变`** 到 **`组件实际更新`** 发生的过程
+                    - **`render 之外的生命周期方法 可以理解为 是组件的 "躯干"`**
+                        > "躯干" 未必总是会做具体的事情 <br>
+                        > 倘若 "躯干" 做了点什么 <br>
+                        > 往往都会直接 或 间接 地影响到 "灵魂"
+
+        - ### React 15 生命周期
+            > 拆解 React 生命周期: 从 React 15 说起
+            - 认识 React 15 的生命周期流程
+                ```js
+                constructor()
+                componentWillReceiveProps()
+                shouldComponentUpdate()
+                componentWillMount()
+                componentWillUpdate()
+                componentDidUpdate()
+                componentDidMount()
+                render()
+                componentWillUnmount()
+                ```
+                > 如果你接触 react 足够早, 或许你还见过 getDefaultProps() 和 getInitialState() 这两个方法 <br>
+                > 它们都是 create-react-class 模块下 初始化数据 的方法 <br>
+                > 在 ES6 普及后, 这种写法 就不再使用了, 所以这里不再展开。可以参考 [React 不使用 ES6](https://zh-hans.reactjs.org/docs/react-without-es6.html)
+
+
         - [react 生命周期图 在线 各版本 各语言: https://projects.wojtekmaj.pl/react-lifecycle-methods-diagram/](https://projects.wojtekmaj.pl/react-lifecycle-methods-diagram/)
         - ![](./img/1-4.react-lifecycle-16.3.jpg)
         - ![](./img/1-4.react-lifecycle-16.4.jpg)
@@ -1601,6 +1653,54 @@
 
 
 - # 第5章 Redux入门
+    - ## 为什么出现 Redux ?
+        > 一图胜千言, 何况是四图? 图解DVA [链接: https://www.yuque.com/flying.ni/the-tower/tvzasn](https://www.yuque.com/flying.ni/the-tower/tvzasn)
+        - 1.React 是一个UI框架, 它负责视图渲染. 但是它没有 考虑数据如何存储的问题
+        - 2.于是就产生了 Redux, Redux 负责数据的 流向、存储、维护 问题, 同时提出了一个 Store 的概念
+        - 3.但是 又由于 Redux 没有考虑 异步数据的问题, 于是就产生了 Redux-Saga, 用于专门处理 异步数据
+        ```
+        ---------------  ----------------  ------------------
+        |             |  |              |  |                |
+        |    React    |  |    Redux     |  |   Redux-Saga   |
+        |             |  |              |  |                |
+        ---------------  ----------------  ------------------
+        ```
+        ```
+                          ------------------------------------------------------------
+        ---------------  |  ----------------  ------------------  -------------------  |
+        |             |  |  |              |  |                |  |                 |  |
+        |    React    |  |  |    Redux     |  |   Redux-Saga   |  |  React-router   |  |
+        |             |  |  |              |  |                |  |                 |  |
+        ---------------  |  ----------------  ------------------  -------------------  |
+                         |                                                             |
+                         |                                                             |
+                         |   Dva                                                       |
+                          -------------------------------------------------------------
+        ```
+        > Dva Redux 核心概念讲解 [B站 视频地址](https://www.bilibili.com/video/BV1qz411z7s3?p=4&spm_id_from=pageDriver)
+        > - `Reducer, Effect, dispatch, connect, Subscription`
+        > - `call, put, select, yield`
+        - `mapStateToProps` 和 connect 的用法讲解
+            - 第一部分，大致讲解 [B站 视频地址](https://www.bilibili.com/video/BV1qz411z7s3?p=6) 时间: 5:40秒处
+            - 第二部分，详细讲解 [B站 视频地址](https://www.bilibili.com/video/BV1qz411z7s3?p=7) 时间: 25:10秒处
+        ```
+        ------------------------------------------------------------------------------------------
+        |                                                                                         |
+        |                                                                                         |
+        |                      ------------------------------------------------------------       |
+        |   ---------------  |  ----------------  ------------------  -------------------  |      |
+        |   |             |  |  |              |  |                |  |                 |  |      |
+        |   |    React    |  |  |    Redux     |  |   Redux-Saga   |  |  React-router   |  |      |
+        |   |             |  |  |              |  |                |  |                 |  |      |
+        |   ---------------  |  ----------------  ------------------  -------------------  |      |
+        |                    |                                                             |      |
+        |                    |                                                             |      |
+        |                    |   Dva                                                       |      |
+        |                     -------------------------------------------------------------       ||                                                                                         |
+        |                                                                                         |
+        |   Umi                                                                                   |
+        ------------------------------------------------------------------------------------------
+        ```
     - ## Redux 使用总揽
 
         - 1.在 `Component` 中
