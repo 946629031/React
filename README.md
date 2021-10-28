@@ -47,6 +47,10 @@
 
     - [第3章 React基础精讲](#第3章-React基础精讲)
     - [第4章 React高级内容](#第4章-React高级内容)
+        - [1-4-1 React 15 生命周期](#1-4-1-React-15-生命周期)
+            - [react15生命周期流程图](#react15生命周期流程图)
+        - []()
+        - []()
     - [第5章 Redux入门](#第5章-Redux入门)
         - [redux-使用总揽](#redux-使用总揽)
         - [Redux 主要API | Redux 设计和使用的三项原则](#5-9-redux知识点复习补充)
@@ -418,7 +422,8 @@
                         > 倘若 "躯干" 做了点什么 <br>
                         > 往往都会直接 或 间接 地影响到 "灵魂"
 
-        - ### React 15 生命周期
+        - ### 1-4-1 React 15 生命周期
+            - 可以参考文章: [详解 React 15 生命周期](https://juejin.cn/post/6907541473290354702) <br><br>
             > 拆解 React 生命周期: 从 React 15 说起
             - 认识 React 15 的生命周期流程
                 ```js
@@ -435,6 +440,210 @@
                 > 如果你接触 react 足够早, 或许你还见过 getDefaultProps() 和 getInitialState() 这两个方法 <br>
                 > 它们都是 create-react-class 模块下 初始化数据 的方法 <br>
                 > 在 ES6 普及后, 这种写法 就不再使用了, 所以这里不再展开。可以参考 [React 不使用 ES6](https://zh-hans.reactjs.org/docs/react-without-es6.html)
+            - #### react15生命周期流程图
+                - ![react15生命周期流程图](./img/1-4.React15-lifeCycle.png)
+                ```js
+                import React from 'react'
+                import ReactDOM from 'react-dom'
+
+                // 定义子组件
+                class LifeCircle extends React.Component {
+                    constructor (props) {
+                        console.log('进入 constructor')
+                        super(props)
+                        this.state={text: '子组件的文本'}  // state 可以在 constructor 里初始化
+                    }
+
+                    // 初始化渲染时调用
+                    componentWillMount () {
+                        console.log('componentDidMount 方法执行')
+                    }
+
+                    // 父组件修改组件的 props 时会调用
+                    componentWillReceiveProps (nextProps) {
+                        console.log('componentWillReceiveProps 方法执行')
+                    }
+
+                    // 组件更新时调用
+                    shouldComponentUpdate (nextProps, nextState) {
+                        console.log('shouldComponentUpdate 方法执行')
+                        return true
+                    }
+
+                    // 组件更新时调用
+                    componentWillUpdate (nextProps, nextState) {
+                        console.log('componentWillUpdate 方法执行')
+                    }
+
+                    // 组件更新后调用
+                    componentDidUpdate (nextProps, nextState) {
+                        console.log('componentDidUpdate 方法执行')
+                    }
+
+                    // 组件卸载时调用
+                    componentWillUnmount () {
+                        console.log('子组件的 componentWillUnmount 方法执行')
+                    }
+
+                    // 点击按钮, 修改子组件文本内容的方法
+                    changeText = () => {
+                        this.setState({text: '修改后的子组件文本'})
+                    }
+
+                    render () {
+                        console.log('render 方法执行')
+                        return (
+                            <div className='container'>
+                                <button onClick={this.changeText} className='changeText'>修改子组件文本内容</button>
+                                <p className='textContent'>{this.state.text}</p>
+                                <p className='fatherContent'>{this.props.text}</p>
+                            </div>
+                        )
+                    }
+                }
+
+                // 定义 LifeCircle 组件的父组件
+                class LifeCircleContainer extends React.Component {
+                    // state 也可以像这样用属性声明的形式初始化
+                    state = {
+                        text: '父组件的文本',
+                        hideChild: false
+                    }
+
+                    // 点击按钮, 修改父组件文本的方法
+                    changeText = () => {
+                        this.setState({text: '修改后的父组件文本'})
+                    }
+
+                    // 点击按钮, 隐藏(卸载) LifeCircle 组件的方法
+                    hideChild = () => {
+                        this.setState({hideChild: true})
+                    }
+
+                    render () {
+                        return (
+                            <div className='fatherContainer'>
+                                <button onClick={this.changeText} className='changeText'>修改父组件文本内容</button>
+                                <button onClick={this.hideChild} className='hideChild'>隐藏子组件</button>
+                                {this.state.hideChild ? null : <LifeCircle text={this.state.text} />}
+                            </div>
+                        )
+                    }
+                }
+
+                ReactDOM.render( <LifeCircleContainer />, document.getElementById('root') )
+
+                <body>
+                    <div id='root'></div>
+                </body>
+                ```
+                - 以上代码渲染结果
+                    - ![](./img/1-4-1.jpg)
+                
+            - #### Mounting 阶段: 组件的初始化渲染 (挂载阶段)
+                - 其中 `constructor(), componentWillMount(), componentDidMount()` 这三个方法 在组件的生命周期中 都只会执行一次
+                - > 注意⚠️: 不要在 `componentWillMount()` 做一些初始化的操作, 往往这些操作 会伴随着一些风险, 或者 不必要性. (具体原因 在03课时 具体详解)
+                - **`render()`** 在执行的过程中, 并不会去操作 真实DOM, 它的职能是 **`把需要渲染的内容返回出来`**
+                - 真实DOM的渲染工作, 在挂载阶段 是由 **`ReactDOM.render()`** 来承接的
+                - **`componentDidMount()`** 方法在渲染结束后 被触发
+                    - 这时, 真实 DOM 已经被挂载到了页面上
+                    - 可以在这个生命周期里 执行 真实DOM 相关的操作 (这时可以进行DOM操作, 或者其他副作用操作了)
+                    - 异步数据请求、数据初始化 等操作 都可以放到这个 生命周期里 进行操作了
+                - ![](./img/1-4.lifeCircle-mounting.jpg)
+                - 此时 上面代码的执行后的，console.log 打印结果如下
+                    ```js
+                    进入 constructor
+
+                    componentDidMount 方法执行
+
+                    render 方法执行
+
+                    componentDidMount 方法执行
+                    ```
+
+            - #### Updating 阶段: 组件的更新 (更新阶段)
+                - ![](./img/1-4.lifeCircle-updateting.jpg)
+                - 此时 上面代码的执行后的，console.log 打印结果如下
+                    ```js
+                    进入 constructor
+
+                    componentDidMount 方法执行
+
+                    render 方法执行
+
+                    componentDidMount 方法执行
+                    ```
+                - `componentWillReceiveProps()`
+                    - 父组件更新 和 组件自身更新 相比 多出了一个 `componentWillReceiveProps(nextProps)` 方法
+                    - 其中 它的入参 `nextProps` 是接收到 新的父组件 传递过来新的 `props` 内容
+                    - 而现有的 `props` 可以通过 `this.props` 拿到
+                    - 由此 我们便可以感知到 `props` 的变化
+                    - > 注意⚠️: 我们可以在很多社区讨论 或者 面试中 听到以下这种说法: <br>
+                      > " `componentWillReceiveProps()` 是在组件的 props 内容发生了变化时被触发的 " <br>
+                      >  <br>
+                      > 解析：<br>
+                      > **`不严谨的`**: 
+
+                    - 为什么说它 不严谨呢？我们来看个例子
+                        - 在上面的代码基础上, 现在我们给 父组件 一个小小的修改，给他一个 和 子组件完全无关 的属性 ownText
+                        ```js
+                        // 定义 LifeCirCle 组件的父组件
+                        class LifeCircleContainer extends React.Component {
+                            // state 也可以像这样用 属性声明的形式 初始化
+                            state = {
+                                text: '父组件的文本',
+                                ownText: '仅仅和父组件有关的文本', // 新增 只与父组件 有关的 state
+                                hideChild: false
+                            }
+
+                            changeText = () => {
+                                this.setState({ text: '修改后的父组件文本' })
+                            }
+
+                            // 修改 ownText 的方法
+                            changeOwnText = () => {
+                                this.setState({ ownText: '修改后的父组件自有文本' })
+                            }
+
+                            hideChild = () => {
+                                this.setState({ hideChild: true })
+                            }
+
+                            render () {
+                                return (
+                                    <div className='fatherContainer'>
+                                        {/* 新的 button 按钮 */}
+                                        <button onClick={this.changeOwnText} className='changeText'>修改父组件自有文本内容</button>
+                                        <button onClick={this.changeText} className='changeText'>修改父组件文本内容</button>
+                                        <button onClick={this.hideChild} className='hideChild'>隐藏子组件</button>
+
+                                        <p>{this.state.ownText}</p>
+                                        {this.state.hideChild ? null : <LifeCircle text={this.state.text} />}
+                                    </div>
+                                )
+                            }
+                        }
+                        ```
+                        - 代码执行后的渲染结果 如下所示
+                            - ![](./img/1-4-2.jpg)
+                            - ![](./img/1-4-3.jpg)
+                            > <br>
+                            > 总结：<br>
+                            > - 虽然 ownText 与之组件 完全没有关系<br>
+                            > - 但是, 当父组件 改变了自身的这个 ownText 值时，子组件的 `componentWillReceiveProps()` 仍然被触发了<br>
+                            > <br>
+                            - ![](./img/1-4-4.jpg)
+                                > <br>
+                                > 如果父组件导致组件重新渲染，即使 props 没有更改,<br>
+                                > 也会调用此方法 ( `componentReceiveProps` )。<br>
+                                > 如果只想处理更改，请确保进行 当前值 与 变更值 的比较。 <br>
+                                > --React官方 <br>
+                                > <br>
+                        - 通过示例和官方文档可以得出一个结论：
+
+                            > **`componentWillReceiveProps() 并不是由 props 的变化触发的，而是由父组件的更新触发的。`**
+
+
 
 
         - [react 生命周期图 在线 各版本 各语言: https://projects.wojtekmaj.pl/react-lifecycle-methods-diagram/](https://projects.wojtekmaj.pl/react-lifecycle-methods-diagram/)
