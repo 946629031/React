@@ -441,7 +441,7 @@
                 > 它们都是 create-react-class 模块下 初始化数据 的方法 <br>
                 > 在 ES6 普及后, 这种写法 就不再使用了, 所以这里不再展开。可以参考 [React 不使用 ES6](https://zh-hans.reactjs.org/docs/react-without-es6.html)
             - #### react15生命周期流程图
-                - ![react15生命周期流程图](./img/1-4.React15-lifeCycle.png)
+                - ![react15生命周期流程图](./img/1-4.React15-lifeCycle.jpg)
                 ```js
                 import React from 'react'
                 import ReactDOM from 'react-dom'
@@ -540,7 +540,7 @@
                 - 以上代码渲染结果
                     - ![](./img/1-4-1.jpg)
                 
-            - #### Mounting 阶段: 组件的初始化渲染 (挂载阶段)
+            - #### 1-4-1-1 Mounting 阶段: 组件的初始化渲染 (挂载阶段)
                 - 其中 `constructor(), componentWillMount(), componentDidMount()` 这三个方法 在组件的生命周期中 都只会执行一次
                 - > 注意⚠️: 不要在 `componentWillMount()` 做一些初始化的操作, 往往这些操作 会伴随着一些风险, 或者 不必要性. (具体原因 在03课时 具体详解)
                 - **`render()`** 在执行的过程中, 并不会去操作 真实DOM, 它的职能是 **`把需要渲染的内容返回出来`**
@@ -552,26 +552,32 @@
                 - ![](./img/1-4.lifeCircle-mounting.jpg)
                 - 此时 上面代码的执行后的，console.log 打印结果如下
                     ```js
+                    // 挂载阶段
+
                     进入 constructor
 
-                    componentDidMount 方法执行
+                    componentWillMount 方法执行
 
                     render 方法执行
 
                     componentDidMount 方法执行
                     ```
 
-            - #### Updating 阶段: 组件的更新 (更新阶段)
+            - #### 1-4-1-2 Updating 阶段: 组件的更新 (更新阶段)
                 - ![](./img/1-4.lifeCircle-updateting.jpg)
                 - 此时 上面代码的执行后的，console.log 打印结果如下
                     ```js
-                    进入 constructor
+                    // 由父组件触发 的 更新
 
-                    componentDidMount 方法执行
+                    componentWillReceiveProps 方法执行
+
+                    shouldComponentUpdate 方法执行
+
+                    componentWillUpdate 方法执行
 
                     render 方法执行
 
-                    componentDidMount 方法执行
+                    componentDidUpdate 方法执行
                     ```
                 - `componentWillReceiveProps()`
                     - 父组件更新 和 组件自身更新 相比 多出了一个 `componentWillReceiveProps(nextProps)` 方法
@@ -642,7 +648,68 @@
                         - 通过示例和官方文档可以得出一个结论：
 
                             > **`componentWillReceiveProps() 并不是由 props 的变化触发的，而是由父组件的更新触发的。`**
+            - #### 1-4-1-3 Updating 阶段: 子组件的 自更新
+                - ![](./img/1-4-7.webp)
+                - 单我们点击 上面代码中 的子组件, 更新 子组件 自身时, 以下生命周期函数 会被执行
+                    ```js
+                    // 子组件的 自更新
 
+                    shouldComponentUpdate()
+
+                    componentWillUpdate()
+
+                    render()
+
+                    componentDidUpdate()
+                    ```
+                
+                - ![](./img/1-4-6.jpg)
+                - ![](./img/1-4-5.jpg)
+                - `shouldComponentUpdate(nextProps, nextState)`
+                    > render() 方法由于伴随着 对虚拟DOM 的 构建 和 对比, 过程可以说 相当耗时,  <br>
+                    > 而在 react 中, 我们容易 不经意间 就 **`频繁调用了`** render <br>
+                    > 为了避免掉 不必要的 render() 操作, 带来的 性能开销 <br>
+                    > React 为我们提供了 shouldComponentUpdate() 方法来控制 是否进行渲染
+                    - React 组件会根据 `shouldComponentUpdate()` 的 返回值 来决定是否执行该方法之后的 生命周期
+                    - 进而决定 是否对组件 进行 重渲染 (re-render)
+                    - 返回值 true / false
+                        - true 继续渲染
+                        - false 不渲染
+                        - `shouldComponentUpdate()` 默认返回值 为 true, 即 无条件 重渲染
+                    - 我们一般 通过 手动往 `shouldComponentUpdate()` 里面 添加判断逻辑, 或者通过 引入 `pureComponent` 等最佳实践, 来实现 有条件的 Render
+                    > 只需认识到 shouldComponentUpdate() 的基本使用 及 其与 React 性能之间的 关联关系即可 (后面会再详细讲解)
+                - `componentWillUpdate()`
+                    - 它和 `componentWillMount()` 很类似, 允许你做一些 不涉及 DOM操作 的 准备工作
+                - `componentDidUpdate()`
+                    - 通常是 子组件渲染完毕 的标志
+                    - 可以在此通知 父组件，做一些 需要在 子组件渲染完毕后 才执行的操作
+            - #### 1-4-1-4 Unmounting 阶段: 组件的卸载
+                - ![](./img/1-4-8.jpg)
+                - 在上面的代码中, 我们点击 隐藏子组件，就能实现 卸载的效果
+                ```js
+                // 点击按钮, 隐藏(卸载) LifeCircle 组件的方法
+                hideChild = () => {
+                    this.setState({hideChild: true})
+                }
+
+                render () {
+                    return (
+                        <div className='fatherContainer'>
+                            <button onClick={this.changeText} className='changeText'>修改父组件文本内容</button>
+                            <button onClick={this.hideChild} className='hideChild'>隐藏子组件</button>
+                            {this.state.hideChild ? null : <LifeCircle text={this.state.text} />}
+                        </div>
+                    )
+                }
+                ```
+                - ![](./img/1-4-9.jpg)
+            - 总结
+                - 本小节，我们对 React 设计思想中的 "虚拟 DOM" 和 "组件化"，则两个 关键概念 形成了初步的理解
+                - 同时也对 React 15 中的生命周期进行了 系统的学习和总结
+
+        - ### 1-4-2 React 16 生命周期
+            > React 16 的生命周期变化，这些变化到底是什么样的 ？<br>
+            > 它们背后 又 蕴含着 React 团队怎样的思量呢 ?
 
 
 
