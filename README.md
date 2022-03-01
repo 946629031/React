@@ -711,23 +711,164 @@
             > React 16 的生命周期变化，这些变化到底是什么样的 ？<br>
             > 它们背后 又 蕴含着 React 团队怎样的思量呢 ?
 
+            - 1.先看一眼 React 16 生命周期图
+                - [react 生命周期图 在线 各版本 各语言: https://projects.wojtekmaj.pl/react-lifecycle-methods-diagram/](https://projects.wojtekmaj.pl/react-lifecycle-methods-diagram/)
+                - ![](./img/1-4.react-lifecycle-16.3.jpg)
+                - ![](./img/1-4.react-lifecycle-16.4.jpg)
+                - 什么是 commit ?
+                    - commit 就是 react 把当前的状态，映射到 DOM 的时候
+                    - 它需要 实际的去更新 DOM 节点
+                    - 更新 DOM 节点 就称之为 commit
+                - **`Pre-Commit`** 阶段
+                    - Pre-Commit 阶段，还没真正的更新 DOM
+                    - 但是 在这个阶段是 **`可以读取 DOM 的内容的`**
+                - **`Commit`** 阶段
+                    - DOM 已经被更新了
 
+                - [React v16.3之后的组件生命周期函数](https://zhuanlan.zhihu.com/p/38030418)
+                    - React v16.3虽然是一个小版本升级，但是却对React组件生命周期函数有巨大变化
 
-        - [react 生命周期图 在线 各版本 各语言: https://projects.wojtekmaj.pl/react-lifecycle-methods-diagram/](https://projects.wojtekmaj.pl/react-lifecycle-methods-diagram/)
-        - ![](./img/1-4.react-lifecycle-16.3.jpg)
-        - ![](./img/1-4.react-lifecycle-16.4.jpg)
-        - 什么是 commit ?
-            - commit 就是 react 把当前的状态，映射到 DOM 的时候
-            - 它需要 实际的去更新 DOM 节点
-            - 更新 DOM 节点 就称之为 commit
-        - **`Pre-Commit`** 阶段
-            - Pre-Commit 阶段，还没真正的更新 DOM
-            - 但是 在这个阶段是 **`可以读取 DOM 的内容的`**
-        - **`Commit`** 阶段
-            - DOM 已经被更新了
+            - 2.再看一下 测试代码
+                ```js
+                import React from 'react'
+                import ReactDOM from 'react-dom'
 
-        - [React v16.3之后的组件生命周期函数](https://zhuanlan.zhihu.com/p/38030418)
-            - React v16.3虽然是一个小版本升级，但是却对React组件生命周期函数有巨大变化
+                // 定义子组件
+                class LifeCircle extends React.Component {
+                    constructor(props) {
+                        console.log('进入 constructor')
+                        super(props)
+
+                        this.state = { text: '子组件的文本' } // state 可以在 constructor 里初始化
+                    }
+
+                    // 初始化/更新 时调用
+                    static getDerivedStateFromProps (props, state) {
+                        console.log('getDerivedStateFromProps 方法执行')
+                        return { fatherText: props.text }
+                    }
+
+                    // 初始化渲染时调用
+                    componentDidMount () {
+                        console.log('componentDidMount 方法执行')
+                    }
+
+                    // 组件更新时调用
+                    shouldComponentUpdate (nextProps, nextState) {
+                        console.log('shouldComponentUpdate 方法执行')
+                        return true
+                    }
+
+                    // 组件更新时调用
+                    getSnapshotBeforeUpdate (prevProps, prevState) {
+                        console.log('getSnapshotBeforeUpdate 方法执行')
+                        return 'haha'
+                    }
+
+                    // 组件更新后调用
+                    componentDidUpdate (prevProps, prevState, valueFromSnapshot) {
+                        console.log('componentDidUpdate 方法执行')
+                        console.log('从 getSnapshotBeforeUpdate 获取到的值是', valueFromSnapshot)
+                    }
+
+                    // 组件卸载时调用
+                    componentWillUnmount () {
+                        console.log('子组件的 componentWillUnmount 方法执行')
+                    }
+
+                    // 点击按钮, 修改子组件文本内容的方法
+                    changeText = () => {
+                        this.setState({ text: '修改后的子组件文本' })
+                    }
+
+                    render () {
+                        console.log('render 方法执行')
+                        return (
+                            <div className='container'>
+                                <button onClick={this.changeText} className='changeText' >修改子组件文本内容</button>
+                                <p className='textContent'>{this.state.text}</p>
+                                <p className='fatherContent'>{this.props.text}</p>
+                            </div>
+                        )
+                    }
+                }
+                
+                // 定义 LifeCircle 组件的 父组件
+                class LifeCircleContainer extends React.Component {
+                    // state 也可以像这样 用属性声明的形式初始化
+                    state = {
+                        text: '父组件的文本',
+                        hideChild: false
+                    }
+
+                    // 点击按钮, 修改父组件文本的方法
+                    changeText = () => {
+                        this.setState({ text: '修改后的父组件文本' })
+                    }
+
+                    // 点击按钮, 隐藏 (卸载) LifeCircle 组件的方法
+                    hideChild = () => {
+                        this.setState({ hideChild: true })
+                    }
+
+                    render () {
+                        return (
+                            <div className='fatherContainer'>
+                                <button onClick={this.changeText} className='changeText' >修改父组件文本内容</button>
+                                <button onClick={this.hideChild} className='hideChild' >隐藏子组件</button>
+                                {this.state.hideChild ? null : <LifeCircle text={this.state.text} />}
+                            </div>
+                        )
+                    }
+                }
+
+                ReactDOM.render(<LifeCircleContainer />, document.getElementById('root'))
+                ```
+
+            - #### 1-4-2-1 Mounting 阶段: 组件的初始化渲染 (挂载阶段)
+                - ![](./img/1-4-2-0.jpg)
+                - 1.`render()` 的改进
+                    - React 16 对 render 方法也进行了一些改进
+                        - React16 之前，render 方法必须返回单个元素
+                        - React16 允许我们返回 **`元素数组`** 和 **`字符串`**
+                        - 但本课时 我们更加侧重讨论的是 "工作流" 层面的改变
+                - 2.`getDerivedStateFromProps()`
+                    - 消失的 `ComponentWillMount()`, 新增的 `getDerivedStateFromProps()`
+                        - React 16, 废弃了 `ComponentWillMount()`
+                        - 新增了 `getDerivedStateFromProps()`
+                        > 有人说 React16 试图用 `getDerivedStateFromProps()` 来替代 `componentWillMount()` <br>
+                        > 这种说法 是不严谨的 <br>
+
+                        <br>
+
+                        > `componentWillMount()` 的存在不仅 "鸡肋" 而且 危险 <br>
+                        > 因此它并不值得被 "替代"，它就应该被废弃
+                    - ![](./img/1-4-2-1.jpg)
+                        - `getDerivedStateFromProps()` 的设计初衷 不是为了替换 `componentWillMount()`, 而是试图替换掉 `componentWillReceiveProps()`
+                        - 因此 它有且仅有 一个用途: **`使用 Props 来 派生/更新 state`**
+                        > React 团队 为了确保 `getDerivedStateFromProps()` 的 纯洁性, <br>
+                        > 直接从 命名层面 约束了它的用途。( derived 衍生 派生 的意思 ) <br><br>
+                        > 所以, 如果你不是 出于这个目的 来使用 `getDerivedStateFromProps()`, 原则上来说 **`都是不符合规范的`**
+                    - ![](./img/1-4-2-2.jpg)
+                        - `getDerivedStateFromProps()` 是一个静态方法 (静态方法 不依赖组件实例而存在)
+                        - 因此在它内部 是访问不到 this 的
+                    - ![](./img/1-4-2-3.jpg)
+                        - 该方法可以接收两个参数: props 和 state
+                            - 来自父组件的 props
+                            - 来自自身组件的 state
+                    - ![](./img/1-4-2-4.jpg)
+                        - `getDerivedStateFromProps()` 需要一个对象格式 的返回值
+                        - React 需要用这个 返回值 来更新 state
+                        > 因此 当你不需要使用 `getDerivedStateFromProps()` 来更新 state 时, <br>
+                        > 最好的方式 就是 **`不写`** 这个生命周期函数, 否则就要返回 **`null`**
+
+                    - `getDerivedStateFromProps()` 方法对 state 的更新动作, 并非 "覆盖" 式的更新, 而是针对某个属性的 **`定向更新`**
+                        - 比如, `getDerivedStateFromProps()` 返回一个对象 `{ fatherText: props.text }` ( 将父组件的 text文本 赋予 本组件的 fatherText )
+                        - 返回的对象 并不会 替换掉 原始的 state `{ text: '子组件的文本' }`, 而是 定向更新
+                        - 更新后 的 state: `{ text: '子组件的文本', fatherText: '父组件的文本' }`
+            - #### 1-4-2-2 Updating 阶段: 组件的更新 (更新阶段)
+                - ![](./img/1-4-2-5.jpg)
+
         ```
         生命周期函数
 
@@ -813,6 +954,72 @@
         - `getSnapshotBeforeUpdate`
             - 1.在页面 render 之前调用, state 更新
             - 2.典型场景: 获取 render 之前的 DOM 状态
+
+        - ### 1-4-3 为什么 React 16 要更改组件的生命周期?
+            > 本节笔记 来自于视频: [为什么 React 16 要更改组件的生命周期？](https://www.youtube.com/watch?v=VZLBXrdqUP4&list=PL5d0qARooeQhvlyGbk8tku92CjmbehYiK&index=2)
+            - ### Fiber
+                - Fiber 是 React 16 对 React 核心算法的一次重写
+                - Fiber 会使原本 `同步渲染` 过程变成 `异步渲染`
+            - 为何两次求变?
+                - 在 React 16 之前, 每当我们触发 一次组件的更新, react 都会构建一个 新的虚拟DOM树，通过与上一次的 虚拟DOM树 Diff，实现对 DOM 的定向更新。这个过程 是一个 递归的过程, 如下图所示
+                - ![](./img/1-4-3-1.jpg)
+                - 如图所示，`同步渲染的 递归调用栈 是非常深的，只有最底层的 调用返回了，整个渲染过程 才会开始逐层返回`
+                    - 这个 `漫长且不可打断的更新过程`，将会带来 用户体验 层面的巨大风险
+                    - **`同步渲染一旦开始，便会牢牢抓住主线程不放，直到递归彻底完成。`**
+                    - 在这个过程中 浏览器没办法处理 任何渲染之外的事情，会进入一种 无法处理用户交互的状态，因此 若渲染时间长一点 页面就会面临`卡顿` 甚至 `卡死`的风险
+            - 而 react 16 引入的 Fiber架构 恰好能解决这个风险
+                - Fiber 会将一个 `大的更新任务` 拆解为 `许多个小任务`
+                    - 每当执行完一个 `小任务` 的时候，渲染线程 都会把 主线程 交回去
+                    - 看看有没有 优先级更高的任务 需要处理，确保不会出现 其它任务被饿死的情况，进而避免 `同步渲染带来的卡顿`
+                    - 在这个过程当中，渲染线程不再一去不回头，而是可以被打断的，这就是所谓的 `异步渲染`
+                - ![](./img/1-4-3-2.jpg)
+            - Fiber架构 的重要特征就是 可以被打断的异步渲染模式
+                - 根据 “能否被打断” 这一标准
+                - React16 的生命周期被划分为了 `render` 和 `commit` 两个阶段
+                    - commit 阶段又被分为 两个阶段
+                        - `Pre-commit 阶段`
+                        - `commit 阶段`
+                - ![](./img/1-4.react-lifecycle-16.4.jpg)
+                > render 阶段 在执行过程中 `允许被打断` <br>
+                > 而 commit 阶段则 `总是同步执行的`
+                - 为什么这样设计呢？
+                    - 因为 `render阶段` 对于用户来说 `是不可见的`，所以即使 打断了 再重启，对于用户来说 也是零感知
+                    - 而 `commit阶段` 的操作则涉及 **`真实DOM`** 的渲染，再狂的框架 也不敢在用户眼皮子底下 胡乱更改视图, 所以这个过程 必须用 同步渲染 来求稳
+            - 细说生命周期 "废旧立新" 背后的思考
+                - render阶段 是允许 暂停、终止 和 重启的
+                    - 当一个任务执行到一半，被打断后 下一次渲染线程 抢回主动权时，这个任务被重启的形式是: 重复执行整个任务，而非 接着上一次执行到的 那行代码 往下走
+                    - 这就导致 render阶段 的生命周期都是 有可能被重复执行的
+                - 带着这个结论 我们看看 React 16 打算废弃的是哪些生命周期
+                    ```
+                    componentWillMount
+                    componentWillUpdate
+                    componentWillReceiveProps
+                    ```
+                    - 这三个 生命周期, 它们都处于 render阶段, 都可能 `被重复执行`
+                    - 而且 这些 API 常年被滥用，它们在`重复执行`的过程中，都存在不可小觑的风险
+                        - 上面这些 `Will` 开头的生命周期, 常被滥用于
+                            - setState
+                            - fetch 发起异步请求
+                            - 操作真实DOM
+                        - （1）它们完全可以转移到其它生命周期里去做, ( 尤其是 componentDidxxx )
+                            - 异步请求 再怎么快 也快不过 (React15 下) 同步的生命周期, 首次渲染依然会在数据返回之前执行
+                        - （2）在 Fiber 带来的异步渲染机制下，可能会导致非常严重的BUG
+                            - 由于 render阶段 里的生命周期 都可以重复执行
+                            - 在 `componentWillxxx` 被 **`打断 + 重启`** 多次后，就会发出多个请求
+                                - (例如 多次发送 付款请求, 就会导致 非常严重的BUG)
+                        - 思考:
+                            - `getDerivedStateFromProps` 为啥在设计层面 直接被约束为 一个触碰不到 this 的静态方法?
+                            > 避免开发者 触碰 `this`, 就是在避免各种 `危险的骚操作`
+                        - （3）即使你没有开启异步, React 15 下也有不少人能把自己 "玩死"
+                            - componentWillReceiveProps, componentWillUpdate 里滥用 setState, 导致 `重复渲染、死循环`
+            - React 16 改造生命周期的主要动机
+                - 是为了配合 Fiber架构 带来的 异步渲染机制
+                - 针对 生命周期中 长期被滥用的部分 推行了具有强制性的最佳实践
+                - 确保了 Fiber 机制下 数据和视图 的安全性
+                - 同时也确保了 生命周期方法 的行为 `更加纯粹、可控、可预测`
+            - 现有的生命周期，虽然已经对方法的 最佳实践做了 强约束, 但是仍然无法覆盖所有的 "误操作"
+                - [你可能不需要使用派生 state](https://zh-hans.reactjs.org/blog/2018/06/07/you-probably-dont-need-derived-state.html)
+
 
     - #### React 生命周期函数
         ```js

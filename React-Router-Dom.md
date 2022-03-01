@@ -4,6 +4,19 @@
 - []()
 ----
 
+- 环境
+    ```js
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-router-dom": "^6.0.1",
+    ```
+    详情请看 [完整项目地址 package-lock.json](react-router-dom-project/package-lock.json)
+
+
+
+----
+
+
 ## 01.路由原理
 - 几个基本概念
     - SPA: Single Page Application, 单页面应用
@@ -117,6 +130,12 @@
         React路由小诀窍: 同级路由尽量全部添加exact
     */
 
+    /*
+        React 的路由有两种模式:
+
+        HashRouter          带#号
+        BrowserRouter       不带#号
+    */
 
     import App from './App'
     import { BrowserRouter, Route, Routes } from 'react-router-dom'
@@ -174,6 +193,9 @@
     export default BaseRouter
     ```
 
+- `Link` 和 `NavLink`
+    - `Link` 和 `NavLink` 这两种标签, 尽量使用 `Link`
+    - 除非 当你发现 `Link` 没办法跳转的时候, 可以尝试 `NavLink` 去解决
 
 
 
