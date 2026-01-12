@@ -330,3 +330,58 @@ Reconciler起作用的阶段称为render阶段，Renderer起作用的阶段称�
          return [hook.memoizedState, dispatch];
       }
       ```
+
+     - 执行setCount后，内部发生了什么？ dispatch
+       ```ts
+       const [count, setCount] = useState(1);
+         const dispatch: Dispatch <
+            BasicStateAction < S > ,
+            > = (queue.dispatch = (dispatchAction.bind(
+               null,
+               currentlyRenderingFiber,
+               queue,
+            ): any));
+      ```
+      - dispatchAction packages\react-reconciler\src\ReactFiberHooks.new.js
+         dispatchAction方法内调用 scheduleUpdateOnFiber markStateUpdateScheduled 方法开始进行任务调度，进而触发
+         updateFunctionComponent方法
+      - 多次执行setCount，它是怎么样取到最新的值的？
+      
+         setCount(2)
+         setCount(3)
+         setCount(4)
+      
+   多次调用setCount形成环状链表，updateReducer遍历该环状链表
+
+   ```ts
+   // updateReducer核心代码
+   var pendingQueue = queue.pending;
+   if (pendingQueue !== null) {
+      // first是update(1)
+      var first = pendingQueue.next;
+      var newState = null;
+      var update = first;
+      
+      // 循环遍历，是更新阶段的核心和关键， 
+      do {
+         var action = update.action;
+         // reducer 获取最新值 
+         newState = reducer(newState, action);
+         // 然后遍历下一个update 
+         update = update.next;
+      } while (update !== null && update !== first);
+      // 最新的状态值赋值给memoizedState
+      hook.memoizedState = newState;
+   }
+   ```
+
+6.总结： import {useState} from 'react';
+   - useState实际是从packages\react\src\ReactHooks.js导出
+   - 调用useState传入初始值，初始化时调用的是mountState，const hook =mountWorkInProgressHook()，初次渲染调用 mountWorkInProgressHook 构建 hook 链表
+   - 返回[hook.memoizedState, dispatch]的数组结构
+   - 更新阶段实际调用的是updateReducer，const hook = updateWorkInProgressHook()
+      updateWorkInProgressHook 的作用主要是取出 current fiber 中的 hooks 链表中对应的 hook 节点，挂载到 workInProgress fiber 上的 hooks 链表
+   - 组件的调度是从beginWork 开始，packages\react-reconciler\src\ReactFiberBeginWork.old.js
+      函数组件的渲染和更新，使用了 updateFunctionComponent 函数,调用reconcileChildren方法调和子树,diff 的过程就是在 reconcileChildren 中发生,diff策略：Tree diff Component diff Element diff
+
+   ![](./img/1.png)
