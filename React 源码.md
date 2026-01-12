@@ -639,3 +639,160 @@ Reconciler起作用的阶段称为render阶段，Renderer起作用的阶段称�
          ```
    - 5.useEffect 流程图
      - ![](https://p3-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/6925a6232cd849a18265ed44cbac73f0.png~tplv-a9rns2rl98-image.png?lk3s=8e244e95&rcl=202601121530316BF381EDC28152A4BF21&rrcfp=dafada99&x-expires=2084427031&x-signature=HjiQm7UkiyHaSCEbhbPgEFbuhU4%3D)
+    
+## useCallback
+- 与useState同理，挂载阶段执行的是HooksDispatcherOnMount里的mountCallback
+
+   ```ts
+   useCallback < T > (callback: T, deps: Array < mixed > | void | null): T {
+      currentHookNameInDev = 'useCallback';
+      mountHookTypesDev();
+      checkDepsAreArrayDev(deps);
+      return mountCallback(callback, deps);
+   }
+   ```
+- 更新阶段的useCallback,实际调用的是updateCallback
+   ```ts
+   useCallback < T > (callback: T, deps: Array < mixed > | void | null): T {
+      currentHookNameInDev = 'useCallback';
+      updateHookTypesDev(); // 重新声明的callback ， deps 依赖项 
+      return updateCallback(callback, deps);
+   }
+   ```
+   
+- updateCallback
+  ```ts
+  function updateCallback < T > (callback: T, deps: Array < mixed > | void | null): T {
+      // updateWorkInProgressHook 取出 current fiber 中的 hooks 链表中对应的 hook 节点，挂载到 workInProgress fiber 上的 
+      const hook = updateWorkInProgressHook();
+      const nextDeps = deps === undefined ? null : deps;
+      const prevState = hook.memoizedState;
+      if (prevState !== null) {
+         if (nextDeps !== null) {
+            const prevDeps: Array < mixed > | null = prevState[1];
+            // areHookInputsEqual 对前后的deps进行浅比较 
+            if (areHookInputsEqual(nextDeps, prevDeps)) {
+               return prevState[0];
+            }
+         }
+      }
+      hook.memoizedState = [callback, nextDeps];
+      // 返回一个新的方法
+      return callback;
+  ```
+
+## useMemo
+- 同理useMemo在更新阶段调用的是updateMemo
+   ```ts
+   function updateMemo < T > (nextCreate: () => T, deps: Array < mixed > | void | null, ): T {
+      const hook = updateWorkInProgressHook();
+      const nextDeps = deps === undefined ? null : deps;
+      const prevState = hook.memoizedState;
+      if (prevState !== null) {
+         // Assume these are defined. If they're not, areHookInputsEqual will warn. 
+         if (nextDeps !== null) {
+            const prevDeps: Array < mixed > | null = prevState[1];
+            if (areHookInputsEqual(nextDeps, prevDeps)) {
+               return prevState[0];
+            }
+         }
+      }
+      const nextValue = nextCreate();
+      hook.memoizedState = [nextValue, nextDeps];
+      // 返回一个新的值 
+      return nextValue;
+   }
+   ```
+
+## React.memo()
+- 前面提到了组件的调度是从beginWork 开始，packages\react-reconciler\src\ReactFiberBeginWork.old.js
+   函数组件的渲染和更新，使用了 updateFunctionComponent 函数，
+   memo的实现，有一个关键函数updateMemoComponent
+  ```ts
+  export function memo < Props > (type: React$ElementType, compare ? : (oldProps: Props, newProps: Props) => boolean, ) {
+      if (__DEV__) {
+         if (!isValidElementType(type)) {
+            console.error('memo: The first argument must be a component. Instead ' + 'received: %s', type === null ? 'null' : typeof type, );
+         }
+      }
+      const elementType = {
+         $$typeof: REACT_MEMO_TYPE,
+         type,
+         compare: compare === undefined ? null : compare,
+      };
+      if (__DEV__) {
+         let ownName;
+         Object.defineProperty(elementType, 'displayName', {
+            enumerable: false,
+            configurable: true,
+            get: function () {
+               return ownName;
+            },
+            set: function (name) {
+               ownName = name;
+               if (type.displayName == null) {
+                  type.displayName = name;
+               }
+            },
+         });
+      }
+      return elementType;
+   }
+   ```
+- updateMemoComponent
+  ```ts
+  function updateMemoComponent(current: Fiber | null, workInProgress: Fiber, Component: any, nextProps: any, updateLanes: Lanes, renderLanes: Lanes, ): null | Fiber {
+      const currentChild = ((current.child: any): Fiber);
+      if (!includesSomeLane(updateLanes, renderLanes)) {
+         // 获取当前组件树上的Props 
+         const prevProps = currentChild.memoizedProps;
+         let compare = Component.compare;
+         // 如果有传了比较函数下来，则取传下来的比较的函数，否则使用React 将使用默认的浅比较函数 shallowEqual 
+         compare = compare !== null ? compare : shallowEqual;
+         if (compare(prevProps, nextProps) && current.ref === workInProgress.ref) {
+            return bailoutOnAlreadyFinishedWork(current, workInProgress, renderLanes);
+         }
+      }
+      workInProgress.flags |= PerformedWork;
+      const newChild = createWorkInProgress(currentChild, nextProps);
+      newChild.ref = workInProgress.ref;
+      newChild.return = workInProgress;
+      workInProgress.child = newChild;
+      return newChild;
+   }
+   ```
+- bailoutOnAlreadyFinishedWork
+  ```ts
+  function bailoutOnAlreadyFinishedWork(
+     current: Fiber | null,
+     workInProgress: Fiber,
+     renderLanes: Lanes, ): Fiber | null {
+       if (current !== null) {
+         workInProgress.dependencies = current.dependencies;
+       }
+   
+       if (enableProfilerTimer) {
+         stopProfilerTimerIfRunning(workInProgress);
+       }
+   
+       markSkippedUpdateLanes(workInProgress.lanes);
+   
+       // const App = () => {
+       //    return ( 
+       //       <div>
+       //          <Child/>
+       //       </div>
+       //    )
+       // }
+       // export default React.memo(App)
+   
+       // 判断子节点中是否需要检查更新 子组件是否有任何待处理的工作 
+       if (!includesSomeLane(renderLanes, workInProgress.childLanes)) {
+         return null; // 剪枝：不需要关注子节点(ReactElement)了 阻止组件重新渲染 
+         
+       } else {
+         // 否则clone当前的fiber节点 
+         cloneChildFibers(current, workInProgress);
+         return workInProgress.child;
+       }
+  ```
