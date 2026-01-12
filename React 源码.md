@@ -208,7 +208,7 @@ Reconciler起作用的阶段称为render阶段，Renderer起作用的阶段称�
      ```
 
 5.useState更新阶段的调用
-      更新阶段调用HooksDispatcherOnUpdateInDEV里的hook
+   - 更新阶段调用HooksDispatcherOnUpdateInDEV里的hook
       ```ts
       HooksDispatcherOnUpdateInDEV = {
          useState < S > (initialState: (() => S) | S, ): [S, Dispatch < BasicStateAction < S >> ] {
