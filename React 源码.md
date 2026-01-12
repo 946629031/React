@@ -173,38 +173,38 @@ Reconciler起作用的阶段称为render阶段，Renderer起作用的阶段称�
    - renderWithHooks
      ```ts
      export function renderWithHooks < Props, SecondArg > (
-      current: Fiber | null,
-      workInProgress: Fiber,
-      Component: (p: Props, arg: SecondArg) => any,
-      props: Props,
-      secondArg: SecondArg,
-      nextRenderLanes: Lanes
-   ): any {
-      renderLanes = nextRenderLanes;
-      currentlyRenderingFiber = workInProgress;
-      if (__DEV__) {
-         hookTypesDev = current !== null ? ((current._debugHookTypes: any): Array < HookType > ) : null;
-         hookTypesUpdateIndexDev = -1; // Used for hot reloading: 
-         ignorePreviousDependencies = current !== null && current.type !== workInProgress.type;
-      }
-      workInProgress.memoizedState = null;
-      workInProgress.updateQueue = null;
-      workInProgress.lanes = NoLanes;
-      if (__DEV__) {
-         if (current !== null && current.memoizedState !== null) {
-            ReactCurrentDispatcher.current = HooksDispatcherOnUpdateInDEV;
-         } else if (hookTypesDev !== null) {
-            ReactCurrentDispatcher.current = HooksDispatcherOnMountWithHookTypesInDEV;
-         } else {
-            ReactCurrentDispatcher.current = HooksDispatcherOnMountInDEV;
+         current: Fiber | null,
+         workInProgress: Fiber,
+         Component: (p: Props, arg: SecondArg) => any,
+         props: Props,
+         secondArg: SecondArg,
+         nextRenderLanes: Lanes
+      ): any {
+         renderLanes = nextRenderLanes;
+         currentlyRenderingFiber = workInProgress;
+         if (__DEV__) {
+            hookTypesDev = current !== null ? ((current._debugHookTypes: any): Array < HookType > ) : null;
+            hookTypesUpdateIndexDev = -1; // Used for hot reloading: 
+            ignorePreviousDependencies = current !== null && current.type !== workInProgress.type;
          }
-      } else {
-         ReactCurrentDispatcher.current =
-            current === null || current.memoizedState === null ?
-            HooksDispatcherOnMount :
-            HooksDispatcherOnUpdate;
-      }
-      // 以下省略
+         workInProgress.memoizedState = null;
+         workInProgress.updateQueue = null;
+         workInProgress.lanes = NoLanes;
+         if (__DEV__) {
+            if (current !== null && current.memoizedState !== null) {
+               ReactCurrentDispatcher.current = HooksDispatcherOnUpdateInDEV;
+            } else if (hookTypesDev !== null) {
+               ReactCurrentDispatcher.current = HooksDispatcherOnMountWithHookTypesInDEV;
+            } else {
+               ReactCurrentDispatcher.current = HooksDispatcherOnMountInDEV;
+            }
+         } else {
+            ReactCurrentDispatcher.current =
+               current === null || current.memoizedState === null ?
+               HooksDispatcherOnMount :
+               HooksDispatcherOnUpdate;
+         }
+         // 以下省略
      ```
 
 5.useState更新阶段的调用
