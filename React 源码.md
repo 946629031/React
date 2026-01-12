@@ -384,4 +384,257 @@ Reconciler起作用的阶段称为render阶段，Renderer起作用的阶段称�
    - 组件的调度是从beginWork 开始，packages\react-reconciler\src\ReactFiberBeginWork.old.js
       函数组件的渲染和更新，使用了 updateFunctionComponent 函数,调用reconcileChildren方法调和子树,diff 的过程就是在 reconcileChildren 中发生,diff策略：Tree diff Component diff Element diff
 
-   ![](./img/1.png)
+   ```ts
+   // ReactFiberBeginWork.old.js
+
+   function updateFunctionComponent(
+     current,
+     workInProgress,
+     Component,
+     nextProps: any,
+     renderLanes,
+   ) {
+      if (__DEV__) {
+         // ...
+      }
+
+     let context;
+     if (!disableLegacyContext) {
+       // …
+     }
+   
+     let nextChildren;
+     prepareToReadContext(workInProgress, renderLanes);
+   
+     if (__DEV__) {
+       // …
+     } else {
+       nextChildren = renderWithHooks( // 函数组件更新和渲染过程执行的入口
+         current,
+         workInProgress,
+         Component,
+         nextProps,
+         context,
+         renderLanes,
+       );
+     }
+   
+     // React DevTools reads this flag.
+     workInProgress.flags = PerformedWork;
+   
+     // reconcileChildren 调和子树，diff 的过程就是在 reconcileChildren 中发生的
+     reconcileChildren(current, workInProgress, nextChildren, renderLanes);
+     return workInProgress.child;
+   }
+   ```
+   - 最后是commit阶段
+7.为什么不能在条件判断里使用hook
+   - mount阶段将生成的hooks链表挂载到fiberNode的memoizedState属性上，
+   - update阶段通过updateWorkInProgressHook取出current fiber 中的hooks链表中对应的hook节点，挂载到workInProgress fiber上的hooks链表，updateWorkInProgressHook按顺序取hook
+
+## useEffect
+   ```ts
+   function mountEffect(
+     create: () => (() => void) | void,
+     deps: Array<mixed> | void | null,
+   ): void {
+     if (__DEV__) {
+       // $FlowExpectedError - jest isn't a global, and isn't recognized outside of tests
+       if ('undefined' !== typeof jest) {
+         warnIfNotCurrentlyActingEffectsInDEV(currentlyRenderingFiber);
+       }
+     }
+   
+     return mountEffectImpl(
+       UpdateEffect | PassiveEffect,
+       HookPassive,
+       create,
+       deps,
+     );
+   }
+   
+   function updateEffect(
+     create: () => (() => void) | void,
+     deps: Array<mixed> | void | null,
+   ): void {
+     if (__DEV__) {
+       // $FlowExpectedError - jest isn't a global, and isn't recognized outside of tests
+       if ('undefined' !== typeof jest) {
+         warnIfNotCurrentlyActingEffectsInDEV(currentlyRenderingFiber);
+       }
+     }
+   
+     return updateEffectImpl(
+       UpdateEffect | PassiveEffect,
+       HookPassive,
+       create,
+       deps,
+     );
+   }
+   ```
+   - 1.可以看到，mountEffect 接受 useEffect 传入的 回调函数(create) 和 依赖项{deps) 两个参数，
+     并返回了 mountEffectImpl 的执行结果。
+     在调用 mountEffectImpl 时传入了用于位运算的 fiber 节点标识和 hook 对象的标识，
+     还传入了 useEffect提供的两个参数 callback 和依赖项
+   - 2.接下来看看mountEffectImpl 做了什么事情
+      ```ts
+      function mountEffectImpl(fiberFlags, hookFlags, create, deps): void {
+         // 创建 hook 对象，将 hook 对象添加到 workInProgressHook 单向链表中，返回最新的 hook 链表 
+         const hook = mountWorkInProgressHook();
+         // 初始化 useEffect 的第二个参数 依赖项 
+         const nextDeps = deps === undefined ? null : deps;
+         // 当前 fiber 节点的二进制值，区分当前 effect 是 useEffect 还是 useLayoutEffect 
+         currentlyRenderingFiber.flags = fiberFlags;
+         // 初始化 effect 链表，添加到 useEffect hook 的 memoizedState 属性上
+         // 因此 useEffect hook 的 memoizedState 并不是一个具体的值(useState、useReducer 的 memoizedState 是一个具体的值)，而 
+         hook.memoizedState = pushEffect(
+            // HookHasEffect 和 hookFlags 做位运算
+            // HookHasEffect 标记Effect的回调和销毁函数需要执行
+            // hookFlags 参数值为 HookPassive，表示 hook 是 useEffect 
+            HookHasEffect | hookFlags,
+            create, // useEffect hook 的第一个参数 callback 
+            undefined,
+            nextDeps, // useEffect hook 的第二个参数 依赖项数组 
+         );
+      }
+      ```
+   - 3.pushEffect
+      无论是否需要重新执行 useEffect 的 callback，最后都会调用 pushEffect 去更新 hook 对象上的effect 链表，然后将更新后的 effect 添加到 hook 对象上的 memoizedState 属性上
+     ```ts
+     function pushEffect(tag, create, destroy, deps) {
+         // 新建一个 effect 对象 
+         const effect: Effect = {
+            tag,
+            // effect的tag，用于区分useEffect和useLayoutEffect 
+            create,
+            // useEffect 的第一个参数 callback 
+            destroy,
+            deps, // useEffect 的 第二个参数 依赖项数组
+            // Circular 
+            next: (null: any),
+            // 链表的next指针，链接下一个 effect 
+         };
+      
+         // destroy是什么? 
+         【
+            useEffect(() => {
+               // destroy 
+               return () => {
+                  // 卸载 
+               }
+            }, [])
+         】
+      
+      
+         //从当前 Fiber 节点的 updateQueue 属性上获取当前 Fiber 节点的 更新队列 
+         let componentUpdateQueue: null | FunctionComponentUpdateQueue = (currentlyRenderingFiber.updateQueue: any);
+         // 【为什么要创建更新队列？】
+         // 【是因为在Fiber的commit阶段后去回调】 
+         if (componentUpdateQueue === null) {
+            // 如果当前 Fiber 节点的更新队列不存在，则创建一个更新队列 
+            componentUpdateQueue = createFunctionComponentUpdateQueue();
+            currentlyRenderingFiber.updateQueue = (componentUpdateQueue: any);
+            // 将 effect 链表添加到 更新队列上 callback 
+            componentUpdateQueue.lastEffect = effect.next = effect;
+         } else {
+            // 当前 Fiber 节点上以存在更新队列，将当前的 effect 添加到 effect 链表的末尾
+            // effect 是一个环形链表 
+      
+            const lastEffect = componentUpdateQueue.lastEffect;
+            if (lastEffect === null) {
+               componentUpdateQueue.lastEffect = effect.next = effect;
+            } else {
+               const firstEffect = lastEffect.next;
+               lastEffect.next = effect;
+               effect.next = firstEffect;
+               componentUpdateQueue.lastEffect = effect;
+            }
+         }
+         return effect;
+      }
+      ```
+   - 4.更新阶段
+      - 更新过程中 useEffect 实际调用的方法 updateEffect
+      - updateEffect - packages\react-reconciler\src\ReactFiberHooks.new.js
+     ```ts
+     function updateEffect(
+         create: () => (() => void) | void,
+         deps: Array < mixed > | void | null,
+      ): void {
+         if (__DEV__) {
+            // $FlowExpectedError - jest isn't a global, and isn't recognized outside of tests 
+            if (typeof jest !== 'undefined') {
+               warnIfNotCurrentlyActingEffectsInDEV(currentlyRenderingFiber);
+            }
+         }
+         // 实际调用updateEffectImpl
+         return updateEffectImpl(PassiveEffect, HookPassive, create, deps);
+      }
+      ```
+      - updateEffectImpl - packages\react-reconciler\src\ReactFiberHooks.new.js
+        ```ts
+        function updateEffectImpl(fiberFlags, hookFlags, create, deps): void {
+            // 当前正在更新的 fiber 节点上的 hook 
+            const hook = updateWorkInProgressHook();
+            // 新的 deps 
+            const nextDeps = deps === undefined ? null : deps;
+            let destroy = undefined;
+         
+            //currentHook: 当前 fiber 节点上的 hook 对象 
+         
+            // 当前 fiber 节点上存在 hook 对象 
+            if (currentHook !== null) {
+               // 获取旧的 effect 状态 
+               const prevEffect = currentHook.memoizedState;
+               destroy = prevEffect.destroy;
+               // 如果新的 deps 存在 
+               if (nextDeps !== null) {
+                  // 获取旧的 deps 
+                  const prevDeps = prevEffect.deps;
+                  // 【重点】：areHookInputsEqual 方法比较新旧 deps 是否相同 
+                  if (areHookInputsEqual(nextDeps, prevDeps)) {
+                     // 新旧 deps 相同，传入 hookFlags， 表示不需要 update，更新 hook 对象上的 effect 链 
+                     pushEffect(hookFlags, create, destroy, nextDeps);
+                     return;
+                  }
+               }
+            }
+         
+            // 代码执行到这里，表示新旧的 deps 不一样 
+            // 更新 hook 对象上的effect 链 
+            hook.memoizedState = pushEffect(
+               // HookHasEffect 和 hookFlags 做位运算
+               // HookHasEffect 标记Effect的回调和销毁函数需要执行
+               // hookFlags 参数值为 HookPassive，表示 hook 是 useEffect
+               HookHasEffect | hookFlags,
+               create,
+               destroy,
+               nextDeps,
+            );
+         }
+         ```
+      - areHookInputsEqual(nextDeps, prevDeps) nextDeps 新的依赖项，prevDeps旧的依赖项
+         比较新旧deps是否相同，返回true表示前后deps是一致的，返回false表示前后deps是不一致的，
+         不一致则更新 hook 对象上的effect 链，hook.memoizedState = xxx
+        ```ts
+        function areHookInputsEqual(
+            nextDeps: Array < mixed > , [1]
+            prevDeps: Array < mixed > | null, [1]
+         ) {
+            // prevDeps === null 表示不传useEffect的第二个参数， 
+            // 始终return false，即表示监听全局state的变化
+            if (prevDeps === null) {
+               return false;
+            }
+            // // deps 是一个 Array，循环遍历去比较 array 中的每个 item 
+            for (let i = 0; i < prevDeps.length && i < nextDeps.length; i++) {
+               // is比较函数是浅比较 
+               if (is(nextDeps[i], prevDeps[i])) {
+                  continue;
+               }
+               return false;
+            }
+            return true;
+         }
+         ```
+   - 5.useEffect 流程图
