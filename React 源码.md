@@ -39,7 +39,7 @@ Reconciler起作用的阶段称为render阶段，Renderer起作用的阶段称�
 2. 更新时，处理当前set操作优先级，按优先级计算出state是否发生变更及是否应该更新节点。
 
 
-   ```js
+   ```ts
    useState < S > (initialState: (() => S) | S, ): [S, Dispatch < BasicStateAction < S >> ] {
       currentHookNameInDev = 'useState';
       mountHookTypesDev();
@@ -91,3 +91,242 @@ Reconciler起作用的阶段称为render阶段，Renderer起作用的阶段称�
       return [hook.memoizedState, dispatch];
    }
    ```
+
+   - hook的挂载位置
+      - packages\react\src\ReactCurrentDispatcher.js
+     ```ts
+     import ReactCurrentDispatcher from './ReactCurrentDispatcher';
+      type BasicStateAction < S > = (S => S) | S;
+      type Dispatch < A > = A => void;
+
+      function resolveDispatcher() {
+         const dispatcher = ReactCurrentDispatcher.current;
+         return dispatcher;
+      }
+      export function useState < S > (
+         initialState: (() => S) | S, 
+         ): [S, Dispatch < BasicStateAction < S >> ] {
+         const dispatcher = resolveDispatcher();
+         return dispatcher.useState(initialState);
+      }
+     ```
+3. 无论是初次挂载还是更新，每调用一次hooks函数，都会产生一个hook对象与之对应。以下是hook对象的结构。
+   ```ts
+   {
+      baseQueue: null, // 未处理的 update 队列（一般是上一轮渲染未完成的 update）
+      baseState: 'hook1',
+      memoizedState: null, // 值 
+      queue: null, // 当前出发的 update 队列 
+      next: {
+         baseQueue: null,
+         baseState: 'hook2',
+         memoizedState: null,
+         queue: null,
+         next: {
+            baseQueue: null,
+            baseState: 'hook3',
+            memoizedState: null,
+            queue: null,
+            next: {
+               baseQueue: null,
+               baseState: null,
+               memoizedState: 'hook4',
+               next: null,
+               queue: null
+            }
+         }
+      }
+   }
+   ```
+4.fiber 的主要属性如下：
+   ```ts
+   var FiberNode = {
+      tag = tag; // 组件类型 
+      key = key; // 组件props上的key 
+      elementType = null; // ReactElement.type 组件的dom类型， 比如`div, p` 
+      type = null; // 异步组件resolved之后返回的内容 
+      stateNode = null; // 在浏览器环境对应dom节点 
+   
+      return = null; // 指向父节点 
+      child = null; // 孩子节点 
+      sibling = null; // 兄弟节点， 兄弟节点的return指向同一个父节点 
+      
+      index = 0; 
+      ref = null; // ref 
+      pendingProps = pendingProps; // 新的props 
+      memoizedProps = null; // 上一次渲染完成的props 
+      updateQueue = null; // 组件产生的update信息会放在这个队列 
+      memoizedState = null; // 在函数组件中，memoizedState用于保存hook链表 
+      dependencies = null;
+      mode = mode; // Effects 
+      
+      flags = NoFlags; // 相当于之前的effectTag， 记录side effect类型 
+      nextEffect = null; // 单链表结构， 便于快速查找下一个side effect 
+      firstEffect = null; // fiber中第一个side effect 
+      lastEffect = null; // fiber中最后一个side effect 
+      lanes = NoLanes; // 优先级相关 
+      childLanes = NoLanes; // 优先级相关 
+      alternate = null; // 对应的是current fiber
+   }
+   ```
+
+   - renderWithHooks
+     ```ts
+     export function renderWithHooks < Props, SecondArg > (
+      current: Fiber | null,
+      workInProgress: Fiber,
+      Component: (p: Props, arg: SecondArg) => any,
+      props: Props,
+      secondArg: SecondArg,
+      nextRenderLanes: Lanes
+   ): any {
+      renderLanes = nextRenderLanes;
+      currentlyRenderingFiber = workInProgress;
+      if (__DEV__) {
+         hookTypesDev = current !== null ? ((current._debugHookTypes: any): Array < HookType > ) : null;
+         hookTypesUpdateIndexDev = -1; // Used for hot reloading: 
+         ignorePreviousDependencies = current !== null && current.type !== workInProgress.type;
+      }
+      workInProgress.memoizedState = null;
+      workInProgress.updateQueue = null;
+      workInProgress.lanes = NoLanes;
+      if (__DEV__) {
+         if (current !== null && current.memoizedState !== null) {
+            ReactCurrentDispatcher.current = HooksDispatcherOnUpdateInDEV;
+         } else if (hookTypesDev !== null) {
+            ReactCurrentDispatcher.current = HooksDispatcherOnMountWithHookTypesInDEV;
+         } else {
+            ReactCurrentDispatcher.current = HooksDispatcherOnMountInDEV;
+         }
+      } else {
+         ReactCurrentDispatcher.current =
+            current === null || current.memoizedState === null ?
+            HooksDispatcherOnMount :
+            HooksDispatcherOnUpdate;
+      }
+      // 以下省略
+     ```
+
+5.useState更新阶段的调用
+      更新阶段调用HooksDispatcherOnUpdateInDEV里的hook
+      ```ts
+      HooksDispatcherOnUpdateInDEV = {
+         useState < S > (initialState: (() => S) | S, ): [S, Dispatch < BasicStateAction < S >> ] {
+            currentHookNameInDev = 'useState';
+            updateHookTypesDev();
+            const prevDispatcher = ReactCurrentDispatcher.current;
+            ReactCurrentDispatcher.current = InvalidNestedHooksDispatcherOnUpdateInDEV;
+            try {
+               return updateState(initialState);
+            } finally {
+               ReactCurrentDispatcher.current = prevDispatcher;
+            }
+         },
+         useCallback < T > (callback: T, deps: Array < mixed > | void | null): T {
+            currentHookNameInDev = 'useCallback';
+            updateHookTypesDev();
+            return updateCallback(callback, deps);
+         },
+         // 以下省略 
+         // ----updateState 
+      
+         function updateState < S > (
+            initialState: (() => S) | S,
+         ): [S, Dispatch < BasicStateAction < S >> ] {
+            return updateReducer(basicStateReducer, (initialState: any));
+         }
+      ```
+
+      - 实际执行的是updateReducer
+      ```ts
+      function updateReducer < S, I, A > (
+         reducer: (S, A) => S,
+         initialArg: I,
+         init ? : I => S,
+      ): [S, Dispatch < A > ] {
+         // updateWorkInProgressHook 的作用主要是取出 current fiber 中的 hooks 链表中对应的 hook 节点，挂载到 workInProgress 
+         const hook = updateWorkInProgressHook();
+         const queue = hook.queue;
+         queue.lastRenderedReducer = reducer;
+         const current: Hook = (currentHook: any);
+         let baseQueue = current.baseQueue;
+         const pendingQueue = queue.pending;
+         if (pendingQueue !== null) {
+            if (baseQueue !== null) {
+               const baseFirst = baseQueue.next;
+               const pendingFirst = pendingQueue.next;
+               baseQueue.next = pendingFirst;
+               pendingQueue.next = baseFirst;
+            }
+            current.baseQueue = baseQueue = pendingQueue;
+            queue.pending = null;
+         }
+         if (baseQueue !== null) {
+            const first = baseQueue.next;
+            let newState = current.baseState;
+            let newBaseState = null;
+            let newBaseQueueFirst = null;
+            let newBaseQueueLast = null;
+            let update = first;
+            do {
+               const updateLane = update.lane;
+               // 优先级提取update 
+               if (!isSubsetOfLanes(renderLanes, updateLane)) {
+                  // 优先级不够: 加入到baseQueue中, 等待下一次render
+      
+                  const clone: Update < S, A > = {
+                     lane: updateLane,
+                     action: update.action,
+                     eagerReducer: update.eagerReducer,
+                     eagerState: update.eagerState,
+                     next: (null: any),
+                  };
+                  if (newBaseQueueLast === null) {
+                     newBaseQueueFirst = newBaseQueueLast = clone;
+                     newBaseState = newState;
+                  } else {
+                     newBaseQueueLast = newBaseQueueLast.next = clone;
+                  }
+                  currentlyRenderingFiber.lanes = mergeLanes(currentlyRenderingFiber.lanes,
+                     updateLane, );
+                  markSkippedUpdateLanes(updateLane);
+               } else {
+                  if (newBaseQueueLast !== null) {
+                     const clone: Update < S, A > = {
+                        lane: NoLane,
+                        action: update.action,
+                        eagerReducer: update.eagerReducer,
+      
+                        eagerState: update.eagerState,
+                        next: (null: any),
+                     };
+                     newBaseQueueLast = newBaseQueueLast.next = clone;
+                  }
+                  if (update.eagerReducer === reducer) {
+                     newState = ((update.eagerState: any): S);
+                  } else {
+                     const action = update.action; // 调用reducer获取最新状态 
+                     newState = reducer(newState, action);
+                  }
+               }
+               update = update.next;
+            }
+            while (update !== null && update !== first);
+            if (newBaseQueueLast === null) {
+               newBaseState = newState;
+            } else {
+               newBaseQueueLast.next = (newBaseQueueFirst: any);
+            }
+            if (!is(newState, hook.memoizedState)) {
+               markWorkInProgressReceivedUpdate();
+            }
+            // 把计算之后的结果更新到workInProgressHook上
+            hook.memoizedState = newState;
+            hook.baseState = newBaseState;
+            hook.baseQueue = newBaseQueueLast;
+            queue.lastRenderedState = newState;
+         }
+         const dispatch: Dispatch < A > = (queue.dispatch: any);
+         return [hook.memoizedState, dispatch];
+      }
+      ```
